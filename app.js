@@ -311,6 +311,7 @@
         <div class="map-popup">
           <div class="popup-name">${esc(s.name)}</div>
           <div class="popup-org"><span class="dot ${orgClass}"></span>${esc(s.org || "")}</div>
+          <a href="#detail" class="popup-detail-btn" data-id="${s.id}">ดูรายละเอียด →</a>
         </div>
       `);
       markerLayer.addLayer(m);
@@ -424,6 +425,16 @@
       if (!card) return;
       e.preventDefault();
       jumpToDetail(parseInt(card.dataset.id, 10));
+    });
+
+    // Map popups are rendered into Leaflet's own DOM tree on demand,
+    // so listen at the document level to catch clicks on the popup button.
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".popup-detail-btn[data-id]");
+      if (!btn) return;
+      e.preventDefault();
+      if (mapInstance) mapInstance.closePopup();
+      jumpToDetail(parseInt(btn.dataset.id, 10));
     });
   }
 
