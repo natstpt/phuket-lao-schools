@@ -108,13 +108,19 @@
     .col-sources { width: 180px; }
     .col-expand { width: 48px; }
 
-    /* Filter pills (Overview) — province row stacks above level row so both
-       are easy to tap on phones. */
+    /* Filter pills (Overview) — each group has its label on its own line
+       above the pills, with a clear gap between groups. Comfortable for
+       both desktop scanning and one-thumb tapping on phones. */
     .filters-stack {
       display: flex;
       flex-direction: column;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      margin-bottom: 24px;
     }
     .filter-row {
       display: flex;
@@ -127,7 +133,6 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #6b6b6b;
-      margin-right: 4px;
     }
     .filter-pill {
       display: inline-flex;
@@ -815,19 +820,23 @@
       <!-- Overview view -->
       <section id="view-overview" role="tabpanel">
         <div id="filters" class="filters-stack" aria-label="ตัวกรอง">
-          <div class="filter-row">
-            <span class="filter-label">จังหวัด</span>
-            <button class="filter-pill" type="button" data-province="all" aria-pressed="true">ทั้งหมด</button>
-            <button class="filter-pill" type="button" data-province="ภูเก็ต" aria-pressed="false"><span class="dot bg-coral"></span>ภูเก็ต</button>
-            <button class="filter-pill" type="button" data-province="กระบี่" aria-pressed="false"><span class="dot bg-green"></span>กระบี่</button>
-            <button class="filter-pill" type="button" data-province="ระนอง" aria-pressed="false"><span class="dot bg-red"></span>ระนอง</button>
+          <div class="filter-group">
+            <div class="filter-label">จังหวัด</div>
+            <div class="filter-row">
+              <button class="filter-pill" type="button" data-province="all" aria-pressed="true">ทั้งหมด</button>
+              <button class="filter-pill" type="button" data-province="ภูเก็ต" aria-pressed="false"><span class="dot bg-coral"></span>ภูเก็ต</button>
+              <button class="filter-pill" type="button" data-province="กระบี่" aria-pressed="false"><span class="dot bg-green"></span>กระบี่</button>
+              <button class="filter-pill" type="button" data-province="ระนอง" aria-pressed="false"><span class="dot bg-red"></span>ระนอง</button>
+            </div>
           </div>
-          <div class="filter-row">
-            <span class="filter-label">ระดับ</span>
-            <button class="filter-pill" type="button" data-level="kindergarten" aria-pressed="false">อนุบาล</button>
-            <button class="filter-pill" type="button" data-level="primary" aria-pressed="false">ประถม</button>
-            <button class="filter-pill" type="button" data-level="lower_secondary" aria-pressed="false">ม.ต้น</button>
-            <button class="filter-pill" type="button" data-level="upper_secondary" aria-pressed="false">ม.ปลาย</button>
+          <div class="filter-group">
+            <div class="filter-label">ระดับ</div>
+            <div class="filter-row">
+              <button class="filter-pill" type="button" data-level="kindergarten" aria-pressed="false">อนุบาล</button>
+              <button class="filter-pill" type="button" data-level="primary" aria-pressed="false">ประถม</button>
+              <button class="filter-pill" type="button" data-level="lower_secondary" aria-pressed="false">ม.ต้น</button>
+              <button class="filter-pill" type="button" data-level="upper_secondary" aria-pressed="false">ม.ปลาย</button>
+            </div>
           </div>
         </div>
         <div id="overview-map" class="overview-map" aria-label="แผนที่แสดงตำแหน่งโรงเรียนทั้งหมด"></div>
