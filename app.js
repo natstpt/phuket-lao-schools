@@ -210,9 +210,24 @@
       `;
     }
 
+    // Inline back button — visible inside every expanded detail panel.
+    // When the user reached this row by clicking a card, it scrolls back
+    // to that exact card; otherwise it scrolls to the top of the overview.
+    const backBtn = `
+      <div class="detail-back-row">
+        <button type="button" class="back-link back-link-inline" data-action="back-to-overview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          กลับไปหน้าภาพรวม
+        </button>
+      </div>
+    `;
+
     return `<div class="detail-panel">
       <div class="detail-grid">${cells}</div>
       ${areaHTML}
+      ${backBtn}
     </div>`;
   }
 
@@ -438,22 +453,32 @@
     });
   }
 
-  function setupBackButton() {
-    const btn = document.getElementById("back-to-overview");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      const target = lastViewedSchoolId;
-      if (location.hash !== "#overview") location.hash = "#overview";
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        if (target) {
-          const card = document.querySelector(`.overview-card[data-id="${target}"]`);
-          if (card) {
-            card.scrollIntoView({ behavior: "smooth", block: "center" });
-            return;
-          }
+  function goBackToOverview() {
+    const target = lastViewedSchoolId;
+    if (location.hash !== "#overview") location.hash = "#overview";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (target) {
+        const card = document.querySelector(`.overview-card[data-id="${target}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
         }
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }));
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }));
+  }
+
+  function setupBackButton() {
+    // Top button (static element)
+    const topBtn = document.getElementById("back-to-overview");
+    if (topBtn) topBtn.addEventListener("click", goBackToOverview);
+
+    // Inline buttons inside detail panels (rendered dynamically)
+    document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-action='back-to-overview']")) {
+        e.preventDefault();
+        goBackToOverview();
+      }
     });
   }
 

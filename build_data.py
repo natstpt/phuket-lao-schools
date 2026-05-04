@@ -18,6 +18,20 @@ CHECK = "✓"
 
 LEVEL_KEYS = ["kindergarten", "primary", "lower_secondary", "upper_secondary"]
 
+# Manual Facebook overrides — used when the xlsx doesn't already carry
+# a facebook.com URL for a school. Verified via web search.
+MANUAL_FACEBOOK = {
+    "โรงเรียนเทศบาลพิบูลสวัสดี":              "https://www.facebook.com/184447268433225/",
+    "โรงเรียนเทศบาลปลูกปัญญาฯ":               "https://www.facebook.com/plukpanyaschool/",
+    "โรงเรียนเทศบาลบ้านสามกองฯ":              "https://www.facebook.com/SamkongSchool/",
+    "โรงเรียน อบจ.บ้านไม้เรียบ (ตันติโกวิทบำรุง)": "https://www.facebook.com/banmaireab/",
+    "โรงเรียน อบจ.บ้านนาบอน":                 "https://www.facebook.com/100063651889627/",
+    "โรงเรียน อบจ.บ้านตลาดเหนือ (วันครู 2502)":  "https://www.facebook.com/wankroo2502/",
+}
+
+# Domains to drop from the source list (e.g. unsafe / broken sites).
+EXCLUDE_DOMAINS = {"nabon.ac.th"}
+
 
 def is_check(v):
     return isinstance(v, str) and CHECK in v
@@ -51,6 +65,29 @@ def url_key(u):
     k = re.sub(r"^https?://", "", u, flags=re.I)
     k = re.sub(r"^www\.", "", k, flags=re.I)
     return k.rstrip("/").lower()
+
+
+def domain_of(u):
+    """Just the host portion (no path), lowercased."""
+    return url_key(u).split("/")[0]
+
+
+def fixup_sources(school):
+    """
+    Post-process a school's sources list:
+      1. Drop any URL whose domain is in EXCLUDE_DOMAINS.
+      2. Ensure a Facebook URL is present (manual override fills in if missing).
+      3. Move the Facebook entry to the top so it's the first thing the user sees.
+    """
+    sources = [s for s in school["sources"] if domain_of(s["url"]) not in EXCLUDE_DOMAINS]
+
+    fb_idx = next((i for i, s in enumerate(sources) if "facebook.com" in s["url"].lower()), -1)
+    if fb_idx == -1 and school["name"] in MANUAL_FACEBOOK:
+        sources.insert(0, {"url": MANUAL_FACEBOOK[school["name"]], "label": "Facebook"})
+    elif fb_idx > 0:
+        sources.insert(0, sources.pop(fb_idx))
+
+    school["sources"] = sources
 
 
 def label_for(url):
@@ -236,6 +273,7 @@ def main():
     for i, key in enumerate(order, 1):
         rec = schools[key]
         rec["id"] = i
+        fixup_sources(rec)
         final.append(rec)
 
     payload = json.dumps(final, ensure_ascii=False, indent=2)

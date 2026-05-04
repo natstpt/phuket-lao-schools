@@ -106,6 +106,10 @@ const SCHOOLS = [
     },
     "sources": [
       {
+        "url": "https://www.facebook.com/184447268433225/",
+        "label": "Facebook"
+      },
+      {
         "url": "https://piboonsawasdee.ac.th/history.php",
         "label": "piboonsawasdee.ac.th"
       }
@@ -147,6 +151,10 @@ const SCHOOLS = [
     },
     "sources": [
       {
+        "url": "https://www.facebook.com/plukpanyaschool/",
+        "label": "Facebook"
+      },
+      {
         "url": "https://plukpanyaschool.ac.th/home.php",
         "label": "plukpanyaschool.ac.th/home.php"
       }
@@ -185,6 +193,10 @@ const SCHOOLS = [
       "lng": 98.3742264
     },
     "sources": [
+      {
+        "url": "https://www.facebook.com/SamkongSchool/",
+        "label": "Facebook"
+      },
       {
         "url": "https://samkong.ac.th/history.php",
         "label": "samkong.ac.th/history.php"
@@ -225,12 +237,12 @@ const SCHOOLS = [
     },
     "sources": [
       {
-        "url": "https://bangneaw.ac.th",
-        "label": "bangneaw.ac.th"
-      },
-      {
         "url": "https://facebook.com/banbangneawschool",
         "label": "Facebook"
+      },
+      {
+        "url": "https://bangneaw.ac.th",
+        "label": "bangneaw.ac.th"
       }
     ],
     "vacancy": 5,
@@ -276,12 +288,12 @@ const SCHOOLS = [
     },
     "sources": [
       {
-        "url": "https://ppao-mpk.ac.th",
-        "label": "ppao-mpk.ac.th"
-      },
-      {
         "url": "https://facebook.com/ppao.mpk",
         "label": "Facebook"
+      },
+      {
+        "url": "https://ppao-mpk.ac.th",
+        "label": "ppao-mpk.ac.th"
       }
     ],
     "vacancy": 3,
@@ -322,6 +334,10 @@ const SCHOOLS = [
       "lng": 98.3285839
     },
     "sources": [
+      {
+        "url": "https://www.facebook.com/banmaireab/",
+        "label": "Facebook"
+      },
       {
         "url": "https://banmaireab.ac.th",
         "label": "banmaireab.ac.th"
@@ -368,8 +384,8 @@ const SCHOOLS = [
     },
     "sources": [
       {
-        "url": "https://nabon.ac.th",
-        "label": "nabon.ac.th"
+        "url": "https://www.facebook.com/100063651889627/",
+        "label": "Facebook"
       },
       {
         "url": "https://phuketpao.go.th/news/detail/107958",
@@ -412,6 +428,10 @@ const SCHOOLS = [
       "lng": 98.3810336
     },
     "sources": [
+      {
+        "url": "https://www.facebook.com/wankroo2502/",
+        "label": "Facebook"
+      },
       {
         "url": "https://wankroo2502.ac.th",
         "label": "wankroo2502.ac.th"

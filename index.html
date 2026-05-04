@@ -173,6 +173,17 @@
       transform: translateX(-2px);
     }
 
+    /* Inline back button — appears at the bottom of every expanded
+       detail panel for quick return without scrolling to the top. */
+    .detail-back-row {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #e6e3da;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .back-link-inline { margin: 0; }
+
     /* Highlight a row when scrolled-to from a card click */
     @keyframes rowFlash {
       0%   { background-color: rgba(217,104,71,.12); }
