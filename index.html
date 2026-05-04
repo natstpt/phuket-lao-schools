@@ -108,6 +108,78 @@
     .col-sources { width: 180px; }
     .col-expand { width: 48px; }
 
+    /* Filter pills (Overview) */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .filter-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      margin-right: 4px;
+    }
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid #e6e3da;
+      border-radius: 99px;
+      background: #fff;
+      font-size: 13px;
+      color: #3a3a3a;
+      cursor: pointer;
+      transition: border-color .2s, background-color .2s, color .2s;
+      white-space: nowrap;
+    }
+    .filter-pill:hover { border-color: #c9c4b6; }
+    .filter-pill[aria-pressed="true"] {
+      background: #1a1a1a;
+      color: #fafaf7;
+      border-color: #1a1a1a;
+    }
+    .filter-divider {
+      display: inline-block;
+      width: 1px;
+      height: 18px;
+      background: #e6e3da;
+      margin: 0 6px;
+    }
+
+    /* Back button (Detail) */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border: 1px solid #e6e3da;
+      border-radius: 99px;
+      background: #fff;
+      color: #3a3a3a;
+      font-size: 13.5px;
+      cursor: pointer;
+      margin-bottom: 22px;
+      transition: border-color .2s, color .2s, background-color .2s, transform .15s;
+    }
+    .back-link:hover {
+      border-color: #1a1a1a;
+      background: #1a1a1a;
+      color: #fafaf7;
+      transform: translateX(-2px);
+    }
+
+    /* Highlight a row when scrolled-to from a card click */
+    @keyframes rowFlash {
+      0%   { background-color: rgba(217,104,71,.12); }
+      100% { background-color: transparent; }
+    }
+    .row-main.flash, .row-detail.flash td { animation: rowFlash 1.6s ease-out; }
+
     /* Tabs */
     .tabs {
       display: inline-flex;
@@ -216,11 +288,14 @@
       opacity: 0;
       animation: fadeUp .5s ease-out forwards;
       animation-delay: var(--d, 0s);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
     }
     .overview-card:hover {
-      border-color: #c9c4b6;
-      box-shadow: 0 4px 14px -8px rgba(26,26,26,.12);
-      transform: translateY(-1px);
+      border-color: #1a1a1a;
+      box-shadow: 0 6px 18px -10px rgba(26,26,26,.18);
+      transform: translateY(-2px);
     }
 
     .card-head {
@@ -520,12 +595,30 @@
 
       <!-- Overview view -->
       <section id="view-overview" role="tabpanel">
+        <div class="filter-row" id="filters" aria-label="ตัวกรอง">
+          <span class="filter-label">สังกัด</span>
+          <button class="filter-pill" type="button" data-org="all" aria-pressed="true">ทั้งหมด</button>
+          <button class="filter-pill" type="button" data-org="municipal" aria-pressed="false"><span class="dot bg-ocean"></span>เทศบาล</button>
+          <button class="filter-pill" type="button" data-org="pao" aria-pressed="false"><span class="dot bg-coral"></span>อบจ.</button>
+          <span class="filter-divider"></span>
+          <span class="filter-label">ระดับ</span>
+          <button class="filter-pill" type="button" data-level="kindergarten" aria-pressed="false">อนุบาล</button>
+          <button class="filter-pill" type="button" data-level="primary" aria-pressed="false">ประถม</button>
+          <button class="filter-pill" type="button" data-level="lower_secondary" aria-pressed="false">ม.ต้น</button>
+          <button class="filter-pill" type="button" data-level="upper_secondary" aria-pressed="false">ม.ปลาย</button>
+        </div>
         <div id="overview-map" class="overview-map" aria-label="แผนที่แสดงตำแหน่งโรงเรียนทั้งหมด"></div>
         <div class="overview-grid" id="overview-grid"></div>
       </section>
 
       <!-- Detail view -->
       <section id="view-detail" role="tabpanel" hidden>
+        <button id="back-to-overview" type="button" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          กลับไปหน้าภาพรวม
+        </button>
         <div class="overflow-x-auto -mx-6 lg:mx-0">
           <div class="px-6 lg:px-0 min-w-[900px]">
             <table class="schools-table">

@@ -149,7 +149,7 @@
       </div>` : "";
 
     return `
-      <article class="overview-card" style="--d:${(idx * 0.05).toFixed(2)}s">
+      <a href="#detail" class="overview-card" data-id="${s.id}" style="--d:${(idx * 0.05).toFixed(2)}s">
         <header class="card-head">
           <span class="card-seq">ลำดับ <strong>${seqDisplay(s)}</strong></span>
           <span class="card-org-tag"><span class="dot ${orgDot(s.org)}"></span>${orgShort(s.org)}</span>
@@ -159,7 +159,7 @@
         ${levelChips(s)}
         ${statsHTML}
         ${longHTML}
-      </article>
+      </a>
     `;
   }
 
@@ -207,13 +207,26 @@
     `;
   }
 
-  const state = { q: "" };
+  const state = {
+    q: "",
+    org: "all",          // "all" | "municipal" | "pao"
+    levels: new Set(),   // toggleable subset of LEVEL_KEYS
+  };
 
   function matches(s) {
-    if (!state.q) return true;
-    const hay = `${s.name} ${s.address} ${s.org}`.toLowerCase();
-    return hay.includes(state.q.toLowerCase());
+    if (state.org !== "all" && orgKind(s.org) !== state.org) return false;
+    for (const lv of state.levels) {
+      if (!s[lv]) return false;
+    }
+    if (state.q) {
+      const hay = `${s.name} ${s.address} ${s.org}`.toLowerCase();
+      if (!hay.includes(state.q.toLowerCase())) return false;
+    }
+    return true;
   }
+
+  // School the user clicked from a card; back button uses it to scroll there.
+  let lastViewedSchoolId = null;
 
   // ── Leaflet overview map (lazy-init on first render)
   let mapInstance = null;
@@ -317,6 +330,84 @@
     });
   }
 
+  function setupFilters() {
+    const wrap = document.getElementById("filters");
+    if (!wrap) return;
+    wrap.addEventListener("click", (e) => {
+      const btn = e.target.closest(".filter-pill");
+      if (!btn) return;
+      if (btn.dataset.org) {
+        state.org = btn.dataset.org;
+        wrap.querySelectorAll("[data-org]").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+      } else if (btn.dataset.level) {
+        const k = btn.dataset.level;
+        const pressed = btn.getAttribute("aria-pressed") === "true";
+        btn.setAttribute("aria-pressed", String(!pressed));
+        if (pressed) state.levels.delete(k);
+        else state.levels.add(k);
+      }
+      render();
+    });
+  }
+
+  // Switch to detail view, scroll to a school's row, and pop it open.
+  function jumpToDetail(id) {
+    lastViewedSchoolId = id;
+    if (location.hash !== "#detail") {
+      location.hash = "#detail";   // hashchange handler swaps views
+    }
+    // Wait one frame so the detail view is visible before measuring.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const row = document.querySelector(`tr.row-main[data-id="${id}"]`);
+      const detail = document.querySelector(`tr.row-detail[data-id="${id}"]`);
+      if (!row) return;
+      if (detail && detail.hidden) {
+        row.dataset.expanded = "true";
+        const btn = row.querySelector(".expand-toggle");
+        if (btn) btn.setAttribute("aria-expanded", "true");
+        detail.hidden = false;
+      }
+      row.classList.add("flash");
+      if (detail) detail.classList.add("flash");
+      row.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        row.classList.remove("flash");
+        if (detail) detail.classList.remove("flash");
+      }, 1700);
+    }));
+  }
+
+  function setupCardLinks() {
+    const grid = document.getElementById("overview-grid");
+    grid.addEventListener("click", (e) => {
+      const card = e.target.closest(".overview-card[data-id]");
+      if (!card) return;
+      e.preventDefault();
+      jumpToDetail(parseInt(card.dataset.id, 10));
+    });
+  }
+
+  function setupBackButton() {
+    const btn = document.getElementById("back-to-overview");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const target = lastViewedSchoolId;
+      if (location.hash !== "#overview") location.hash = "#overview";
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (target) {
+          const card = document.querySelector(`.overview-card[data-id="${target}"]`);
+          if (card) {
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }));
+    });
+  }
+
   function setupExpand() {
     const tbody = document.getElementById("rows");
     tbody.addEventListener("click", (e) => {
@@ -367,8 +458,11 @@
     }
     initMap();
     setupSearch();
+    setupFilters();
     setupExpand();
     setupTabs();
+    setupCardLinks();
+    setupBackButton();
     render();
   });
 })();
