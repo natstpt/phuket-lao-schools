@@ -6,11 +6,11 @@ const SCHOOLS = [
     "name": "โรงเรียนเทศบาลเมืองภูเก็ต",
     "org": "เทศบาลนครภูเก็ต",
     "address": "75 ถ.กรุงเทพ ต.ตลาดเหนือ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
-    "levels": "อ.1 - ม.3",
+    "levels": "อ.1 - ม.6",
     "kindergarten": true,
     "primary": true,
     "lower_secondary": true,
-    "upper_secondary": false,
+    "upper_secondary": true,
     "google_map": {
       "url": "https://www.google.com/maps/search/?api=1&query=7.8792381,98.3858192&query_place_id=ChIJ7452SuMxUDARZbwrLvkOqh0",
       "lat": 7.8792381,
@@ -40,7 +40,11 @@ const SCHOOLS = [
     "special_programs": "เปิด ม.1-ม.3 (ตั้งแต่ปี 2548) ห้องเรียนหลากหลาย",
     "awards": "โรงเรียนเทศบาลขนาดใหญ่ พื้นที่ 13 ไร่",
     "highlights": "ขนาดใหญ่ มีสาระคณิตหลายระดับ (ป.+ม.ต้น)",
-    "extra_sources": "mpm.ac.th"
+    "extra_sources": "mpm.ac.th",
+    "nearby_places": "ตลาดสดเทศบาลภูเก็ต, ถ.พังงา, ห้างจังซีลอน(ป่าตอง 12กม.), ถ.ถลาง (ย่านชิโน-โปรตุกีส), Lotus's Phuket, Big C Phuket",
+    "dorms_condos": "Connext Condominium (ถ.ศักดิเดช), Sugar Palm Residence (ถ.วิรัชหงส์หยก), Stay Phuket Town (ซ.รัตนโกสินทร์ 200 ปี), The Wide Condotel",
+    "rental_houses": "บ้านเช่าโซนตลาดเหนือ-สวนหลวง, Suan Luang Apartment, Phuket Guesthouse (ซ.ภูธร), บ้านเดี่ยวย่านเจ้าฟ้า",
+    "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sunday Walking Street ถลาง, ถนนถลาง, สวนหลวง ร.9, อนุสาวรีย์ท้าวเทพกระษัตรี (ปลายเมือง)"
   },
   {
     "id": 2,
@@ -79,7 +83,11 @@ const SCHOOLS = [
     "special_programs": "เปิดอ.1-ม.3 โรงเรียนประจำอำเภอทุ่งคา (เดิมชื่อขจรวิทยา)",
     "awards": null,
     "highlights": "อยู่ใจกลางเมือง มีทั้งประถม-ม.ต้น",
-    "extra_sources": "kjrs.ac.th, FB Kjrs.School"
+    "extra_sources": "kjrs.ac.th, FB Kjrs.School",
+    "nearby_places": "ถ.ถลาง, ถ.ดีบุก, ถ.กระบี่, ตลาดเก่าภูเก็ต, ห้องสมุดประชาชน, สถานีตำรวจภูเก็ต, ไปรษณีย์ภูเก็ต",
+    "dorms_condos": "Studio309@Phuket (ถ.ระนอง), ประเสริฐอพาร์ทเมนท์, Phuket Guesthouse, Stay Phuket Town",
+    "rental_houses": "บ้านเช่าย่านเมืองเก่า (ตึกแถวโบราณชิโนโปรตุกีส), บ้านเช่าย่านถ.ระนอง-สตูล",
+    "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sino-Portuguese architecture, ถ.ถลาง, Sunday Walking Street, พิพิธภัณฑ์ภูเก็ตไทยหัว, วัดมงคลนิมิตร"
   },
   {
     "id": 3,
@@ -116,7 +124,11 @@ const SCHOOLS = [
     "special_programs": "เปิดสอนนักเรียนพิเศษเรียนร่วม + ห้องเรียนคู่ขนานออทิสติก",
     "awards": null,
     "highlights": "ประถมล้วน เน้นพื้นฐาน + นักเรียนพิเศษ",
-    "extra_sources": "piboonsawasdee.ac.th"
+    "extra_sources": "piboonsawasdee.ac.th",
+    "nearby_places": "วงเวียนหอนาฬิกา, ถ.ภูเก็ต, ตลาดสดบางเหนียว, ห้างโรบินสันโอเชี่ยน, สวนเฉลิมพระเกียรติ 72 พรรษา, สถานีขนส่งภูเก็ต",
+    "dorms_condos": "Connext Condominium, The Wide Condotel, Sugar Palm Residence, Suan Luang Apartment Phuket",
+    "rental_houses": "บ้านเช่าย่านถ.ดำรง-ถ.มนตรี, บ้านเดี่ยวย่านสุทัศน์, ทาวน์เฮ้าส์ย่านบางเหนียว",
+    "landmarks": "ภูเก็ตเมืองเก่า, ถ.ถลาง, สวนเฉลิมพระเกียรติ 72 พรรษา (สวนหลวง ร.9), Limelight Avenue Phuket, Phuket Trickeye Museum"
   },
   {
     "id": 4,
@@ -151,7 +163,11 @@ const SCHOOLS = [
     "special_programs": "International Programme (Cambridge), Intensive English, ห้อง SMT (วิทย์-คณิต-เทคโนฯ)",
     "awards": "ในพระอุปถัมภ์ฯ สมเด็จเจ้าฟ้าเพชรรัตนฯ",
     "highlights": "เปิดถึง ม.6 มีห้องเรียนพิเศษหลากหลาย เหมาะครูคณิตที่อยากสอนหลักสูตรนานาชาติ",
-    "extra_sources": "plukpanyaschool.ac.th"
+    "extra_sources": "plukpanyaschool.ac.th",
+    "nearby_places": "ถ.ถลาง, ถ.พังงา, ถ.ระนอง, ตลาดเก่าภูเก็ต, สถานีตำรวจ, สวนสาธารณะภูเก็ต, ห้องสมุดประชาชน",
+    "dorms_condos": "Studio309@Phuket, Stay Phuket Town, ประเสริฐอพาร์ทเมนท์, Connext Condominium",
+    "rental_houses": "บ้านเช่าย่านสตูล-ระนอง, ตึกแถวเก่าย่านเมืองเก่า, บ้านเดี่ยวย่านสามกอง",
+    "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sunday Walking Street, ถ.ถลาง, พิพิธภัณฑ์ภูเก็ตไทยหัว, วัดมงคลนิมิตร"
   },
   {
     "id": 5,
@@ -186,7 +202,11 @@ const SCHOOLS = [
     "special_programs": "วงโยธวาทิต (ระดับชาติ), วงดนตรีลูกทุ่งซุปเปอร์แดนซ์สามกอง (ปั้นนักร้องดัง เช่น นนท์ ธนนท์)",
     "awards": "เหรียญทองแข่งขันคอมพิวเตอร์, รางวัลวงโยธวาทิตอันดับ 2",
     "highlights": "เปิดอ.1-ม.3 เด่นด้านดนตรี-นาฏศิลป์",
-    "extra_sources": "samkong.ac.th"
+    "extra_sources": "samkong.ac.th",
+    "nearby_places": "Tesco Lotus สามกอง, Big C สามกอง, สะพานหิน, ตลาดสามกอง, ท่าเรือน้ำลึก, สถานีรถบัสภูเก็ต",
+    "dorms_condos": "dcondo campus resort (สามกอง), ดีคอนโดสามกอง, อพาร์ทเมนท์ย่านสามกอง",
+    "rental_houses": "บ้านเช่าโครงการสามกอง, ทาวน์เฮ้าส์ย่านรัษฎา, บ้านเดี่ยวย่านวิชิตสงคราม",
+    "landmarks": "สะพานหิน (Saphan Hin), สวนสาธารณะสะพานหิน, อนุสาวรีย์เจ้าฟ้า, ท่าเรือน้ำลึกภูเก็ต, Limelight Avenue"
   },
   {
     "id": 6,
@@ -233,7 +253,11 @@ const SCHOOLS = [
     "special_programs": "ประถมล้วน (ป.1-ป.6) มีหลักสูตรหลากหลาย",
     "awards": "**สถานศึกษาพระราชทาน 2567**",
     "highlights": "เป็นโรงเรียนประถมขนาดใหญ่ที่สุด ได้รับรางวัลพระราชทาน",
-    "extra_sources": "bangneaw.ac.th, TopNews 2569"
+    "extra_sources": "bangneaw.ac.th, TopNews 2569",
+    "nearby_places": "ถ.ภูเก็ต, ห้างโรบินสันโอเชี่ยน, ตลาดบางเหนียว, ถ.มนตรี, ลานมังกร, วัดมงคลนิมิตร",
+    "dorms_condos": "The Wide Condotel, Connext Condominium, Sugar Palm Residence, Studio309@Phuket",
+    "rental_houses": "บ้านเช่าย่านบางเหนียว, ทาวน์โฮมย่านถ.ภูเก็ต, บ้านเช่าย่านสะพานหิน",
+    "landmarks": "ภูเก็ตเมืองเก่า, ถ.ถลาง, ลานมังกร (Dragon Square), สวนเฉลิมพระเกียรติ 72 พรรษา, สะพานหิน"
   },
   {
     "id": 7,
@@ -276,7 +300,11 @@ const SCHOOLS = [
     "special_programs": "เปิดอ.2-ม.6 ครบทุกระดับ ม.1-ม.4 รับ 175 คน/ระดับ (5 ห้อง×35 คน)",
     "awards": null,
     "highlights": "อยู่ราไวย์ (ใต้สุดของเมือง) สังกัด อบจ. งบสูง",
-    "extra_sources": "ppao-mpk.ac.th"
+    "extra_sources": "ppao-mpk.ac.th",
+    "nearby_places": "หาดราไวย์, ตลาดราไวย์ (Rawai Seafood Market), Villa Market ราไวย์, 7-Eleven ราไวย์, ตลาดนัดราไวย์",
+    "dorms_condos": "Pakamon Apartment (ถ.วิเศษ), Sanrak Apartment, Rawai Condominium By Bayshore, CALYPSO Condo",
+    "rental_houses": "บ้านเช่าย่านราไวย์-นาคา, บ้านเดี่ยวย่านในหาน, ทาวน์เฮ้าส์ย่านสายยู, Phuket Rent House Rawai",
+    "landmarks": "หาดราไวย์, แหลมพรหมเทพ (Promthep Cape), หาดในหาน, หาดยานุ้ย, ลานพระพรหม, สะพานหินราไวย์"
   },
   {
     "id": 8,
@@ -317,7 +345,11 @@ const SCHOOLS = [
     "special_programs": "ห้องเรียน Mini English Program (MEP) 2 ห้อง×30",
     "awards": null,
     "highlights": "อยู่กะทู้ (ใกล้น้ำตกกะทู้) ขนาดเล็ก ประถมล้วน",
-    "extra_sources": "banmaireab.ac.th"
+    "extra_sources": "banmaireab.ac.th",
+    "nearby_places": "น้ำตกกะทู้, ซ.น้ำตกกะทู้, ตลาดกะทู้, Big C กะทู้, Lotus's กะทู้, ถ.วิชิตสงคราม, Phuket Wake Park",
+    "dorms_condos": "DCondo Kathu, Dcondo Kathu Patong, Kathu Place Apartment, บ้านเช่าภูเก็ตโฮปแลนด์",
+    "rental_houses": "บ้านเช่าย่านกะทู้-ป่าตอง, บ้านเดี่ยวโครงการกะทู้, ทาวน์เฮ้าส์ย่านวิชิตสงคราม, บ้านวัชรธร",
+    "landmarks": "น้ำตกกะทู้ (Kathu Waterfall), ป่าตอง (10 นาที), Phuket Wake Park, พิพิธภัณฑ์เหมืองแร่กะทู้, วัดกะทู้, Loch Palm Golf Club"
   },
   {
     "id": 9,
@@ -358,7 +390,11 @@ const SCHOOLS = [
     "special_programs": "อาคาร 8 หลัง + กำลังก่อสร้างเพิ่ม 1 หลัง โรงเรียนคุณธรรม",
     "awards": null,
     "highlights": "อยู่ตำบลวิชิต (ฉลอง) ขนาดกลาง ประถมล้วน",
-    "extra_sources": "nabon.ac.th, AnyFlip คู่มือ ร.ร."
+    "extra_sources": "nabon.ac.th, AnyFlip คู่มือ ร.ร.",
+    "nearby_places": "วัดฉลอง, ตลาดฉลอง, Big Buddha Phuket, ถ.เจ้าฟ้าตะวันออก, ห้าแยกฉลอง, Tesco Lotus ฉลอง, Phuket Zoo",
+    "dorms_condos": "The Bell Condominium Chalong, Dlux Condominium Chalong, MP Place อพาร์ทเมนท์ฉลอง, The Cloud Phuket",
+    "rental_houses": "บ้านเช่าย่านฉลอง-กะตะ, บ้านเดี่ยวย่านห้าแยกฉลอง, ทาวน์โฮมย่านเจ้าฟ้าตะวันออก, บ้านป่าหล่าย",
+    "landmarks": "วัดฉลอง (วัดไชยธาราราม), พระใหญ่ภูเก็ต (Big Buddha), แหลมหงา-เขาขาด, ห้าแยกฉลอง, ท่าเรือฉลอง"
   },
   {
     "id": 10,
@@ -397,6 +433,10 @@ const SCHOOLS = [
     "special_programs": "วิทยาศาสตร์อันดับ 1 ของจังหวัด, อาคารทันสมัย",
     "awards": "งบประมาณปีละ 100+ ล้าน (สูงกว่าโรงเรียนอื่นในภูเก็ต)",
     "highlights": "อยู่ในเขตเทศบาลนครภูเก็ต แต่สังกัด อบจ. งบสูง น่าสนใจสำหรับครูคณิต-วิทย์",
-    "extra_sources": "wankroo2502.ac.th, gotoknow"
+    "extra_sources": "wankroo2502.ac.th, gotoknow",
+    "nearby_places": "ถ.เจ้าฟ้า, Central Festival Phuket, Lotus's Phuket, ตลาดสดเทศบาลภูเก็ต, สวนหลวง ร.9, ถ.วิชิตสงคราม",
+    "dorms_condos": "Sugar Palm Residence, Connext Condominium, The Wide Condotel, Suan Luang Apartment Phuket",
+    "rental_houses": "บ้านเช่าย่านเจ้าฟ้า-สวนหลวง, ทาวน์โฮมย่านวิชิตสงคราม, บ้านเดี่ยวย่านศักดิเดช",
+    "landmarks": "Central Festival Phuket, ภูเก็ตเมืองเก่า, สวนหลวง ร.9, ถ.ถลาง, Lotus's Phuket"
   }
 ];

@@ -105,8 +105,24 @@
     { key: "extra_sources",    label: "แหล่งข้อมูลเพิ่มเติม" },
   ];
 
+  // Area / housing fields — comma-separated lists shown as chips.
+  // Pair (places + landmarks) and (dorms + rentals) so the 2-col grid reads
+  // naturally: left column = "วันธรรมดา/ที่เที่ยว", right column = "ที่พัก".
+  const AREA_FIELDS = [
+    { key: "nearby_places",  label: "สถานที่ใกล้เคียง" },
+    { key: "landmarks",      label: "แลนด์มาร์คใกล้เคียง" },
+    { key: "dorms_condos",   label: "หอพัก / คอนโดแนะนำ" },
+    { key: "rental_houses",  label: "บ้านเช่าแนะนำ" },
+  ];
+
   function hasAnyDetail(s) {
-    return DETAIL_FIELDS.some((f) => s[f.key]);
+    return DETAIL_FIELDS.some((f) => s[f.key]) || AREA_FIELDS.some((f) => s[f.key]);
+  }
+
+  function chipsHTML(text) {
+    if (!text) return "";
+    const items = String(text).split(/,\s*/).map((s) => s.trim()).filter(Boolean);
+    return `<div class="chip-list">${items.map((it) => `<span class="chip">${esc(it)}</span>`).join("")}</div>`;
   }
 
   const orgShort = (org) => orgKind(org) === "pao" ? "อบจ." : "เทศบาล";
@@ -175,7 +191,29 @@
           </div>
         `;
       }).join("");
-    return `<div class="detail-panel"><div class="detail-grid">${cells}</div></div>`;
+
+    let areaHTML = "";
+    const areaCells = AREA_FIELDS
+      .filter((f) => s[f.key])
+      .map((f) => `
+        <div class="detail-field">
+          <div class="detail-label">${f.label}</div>
+          ${chipsHTML(s[f.key])}
+        </div>
+      `).join("");
+    if (areaCells) {
+      areaHTML = `
+        <div class="detail-section-divider">
+          <span class="detail-section-title">พื้นที่และที่พักใกล้เคียง</span>
+        </div>
+        <div class="detail-grid">${areaCells}</div>
+      `;
+    }
+
+    return `<div class="detail-panel">
+      <div class="detail-grid">${cells}</div>
+      ${areaHTML}
+    </div>`;
   }
 
   const CHEVRON_SVG =

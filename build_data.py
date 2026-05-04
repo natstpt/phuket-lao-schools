@@ -117,11 +117,12 @@ def main():
     order = []
 
     for row_idx in range(2, ws.max_row + 1):
-        cells = [ws.cell(row=row_idx, column=c) for c in range(1, 20)]
+        cells = [ws.cell(row=row_idx, column=c) for c in range(1, 24)]
         (seq, org, pos_no, name, address, _map_text, level_range,
          k, p, ls, us, src_text, vac,
          student_count, staff_count, special_programs,
-         awards, highlights, extra_sources) = (c.value for c in cells)
+         awards, highlights, extra_sources,
+         nearby_places, dorms_condos, rental_houses, landmarks) = (c.value for c in cells)
 
         if not address or "ภูเก็ต" not in str(address):
             continue
@@ -160,6 +161,11 @@ def main():
                 "awards": None,
                 "highlights": None,
                 "extra_sources": None,
+                # Area / housing fields
+                "nearby_places": None,
+                "dorms_condos": None,
+                "rental_houses": None,
+                "landmarks": None,
             }
             order.append(key)
 
@@ -198,6 +204,10 @@ def main():
             ("awards", awards),
             ("highlights", highlights),
             ("extra_sources", extra_sources),
+            ("nearby_places", nearby_places),
+            ("dorms_condos", dorms_condos),
+            ("rental_houses", rental_houses),
+            ("landmarks", landmarks),
         ]:
             if not s[field]:
                 cleaned = clean_text(raw)
