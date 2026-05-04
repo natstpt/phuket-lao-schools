@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>โรงเรียนในสังกัดองค์กรปกครองส่วนท้องถิ่น (อปท.) ในภาคใต้</title>
+  <title>โรงเรียนในสังกัดองค์กรปกครองส่วนท้องถิ่น (อปท.) ภาคใต้</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -108,13 +108,19 @@
     .col-sources { width: 180px; }
     .col-expand { width: 48px; }
 
-    /* Filter pills (Overview) */
+    /* Filter pills (Overview) — province row stacks above level row so both
+       are easy to tap on phones. */
+    .filters-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
     .filter-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
-      margin-bottom: 24px;
     }
     .filter-label {
       font-size: 11px;
@@ -607,6 +613,15 @@
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; vertical-align: middle; }
     .bg-ocean { background: #0f5e5c; }
     .bg-coral { background: #d96847; }
+    .bg-green { background: #2d7a3a; }
+    .bg-red   { background: #c43d3d; }
+    /* Shape icons that distinguish เทศบาล (square) vs อบจ. (triangle)
+       without color. Inherits text color via currentColor. */
+    .org-glyph {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
 
     .row-num {
       font-family: "Fraunces", Georgia, serif;
@@ -778,8 +793,9 @@
   <main>
     <div class="max-w-[1200px] mx-auto px-6 lg:px-10 py-12 lg:py-16">
       <div class="flex items-baseline justify-between mb-6 gap-4 flex-wrap">
-        <h1 class="font-display text-[22px] lg:text-[30px] leading-[1.2] tracking-tight max-w-[36ch]">
-          โรงเรียนในสังกัดองค์กรปกครองส่วนท้องถิ่น (อปท.) ใน<span class="display-italic">ภาคใต้</span>
+        <h1 class="font-display text-[22px] lg:text-[30px] leading-[1.2] tracking-tight">
+          โรงเรียนในสังกัดองค์กรปกครองส่วนท้องถิ่น (อปท.)<br />
+          <span class="display-italic">ภาคใต้</span>
         </h1>
         <span id="result-count" class="text-sm text-ink-muted whitespace-nowrap"></span>
       </div>
@@ -798,18 +814,21 @@
 
       <!-- Overview view -->
       <section id="view-overview" role="tabpanel">
-        <div class="filter-row" id="filters" aria-label="ตัวกรอง">
-          <span class="filter-label">จังหวัด</span>
-          <button class="filter-pill" type="button" data-province="all" aria-pressed="true">ทั้งหมด</button>
-          <button class="filter-pill" type="button" data-province="ภูเก็ต" aria-pressed="false">ภูเก็ต</button>
-          <button class="filter-pill" type="button" data-province="กระบี่" aria-pressed="false">กระบี่</button>
-          <button class="filter-pill" type="button" data-province="ระนอง" aria-pressed="false">ระนอง</button>
-          <span class="filter-divider"></span>
-          <span class="filter-label">ระดับ</span>
-          <button class="filter-pill" type="button" data-level="kindergarten" aria-pressed="false">อนุบาล</button>
-          <button class="filter-pill" type="button" data-level="primary" aria-pressed="false">ประถม</button>
-          <button class="filter-pill" type="button" data-level="lower_secondary" aria-pressed="false">ม.ต้น</button>
-          <button class="filter-pill" type="button" data-level="upper_secondary" aria-pressed="false">ม.ปลาย</button>
+        <div id="filters" class="filters-stack" aria-label="ตัวกรอง">
+          <div class="filter-row">
+            <span class="filter-label">จังหวัด</span>
+            <button class="filter-pill" type="button" data-province="all" aria-pressed="true">ทั้งหมด</button>
+            <button class="filter-pill" type="button" data-province="ภูเก็ต" aria-pressed="false"><span class="dot bg-coral"></span>ภูเก็ต</button>
+            <button class="filter-pill" type="button" data-province="กระบี่" aria-pressed="false"><span class="dot bg-green"></span>กระบี่</button>
+            <button class="filter-pill" type="button" data-province="ระนอง" aria-pressed="false"><span class="dot bg-red"></span>ระนอง</button>
+          </div>
+          <div class="filter-row">
+            <span class="filter-label">ระดับ</span>
+            <button class="filter-pill" type="button" data-level="kindergarten" aria-pressed="false">อนุบาล</button>
+            <button class="filter-pill" type="button" data-level="primary" aria-pressed="false">ประถม</button>
+            <button class="filter-pill" type="button" data-level="lower_secondary" aria-pressed="false">ม.ต้น</button>
+            <button class="filter-pill" type="button" data-level="upper_secondary" aria-pressed="false">ม.ปลาย</button>
+          </div>
         </div>
         <div id="overview-map" class="overview-map" aria-label="แผนที่แสดงตำแหน่งโรงเรียนทั้งหมด"></div>
         <div class="overview-grid" id="overview-grid"></div>
@@ -852,7 +871,13 @@
 
       <div id="empty" class="hidden text-center py-20 text-ink-muted">
         <div class="font-display text-3xl mb-3">ไม่พบ<span class="display-italic">ผลลัพธ์</span></div>
-        <div class="text-sm">ลองเปลี่ยนคำค้น</div>
+        <div class="text-sm mb-7">ลองเปลี่ยนคำค้น หรือล้างตัวกรอง</div>
+        <button type="button" id="empty-reset" class="back-link back-link-inline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          กลับไปหน้าภาพรวม
+        </button>
       </div>
     </div>
   </main>

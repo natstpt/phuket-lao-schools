@@ -21,9 +21,11 @@ LEVEL_KEYS = ["kindergarten", "primary", "lower_secondary", "upper_secondary"]
 # Filter to schools in these southern provinces.
 SOUTHERN_PROVINCES = {"ภูเก็ต", "กระบี่", "ระนอง"}
 
-# Manual Facebook overrides — used when the xlsx doesn't already carry
-# a facebook.com URL for a school. Verified via web search.
+# Authoritative Facebook URLs by school name. If a school is listed here,
+# any FB links pulled from the xlsx are dropped and only this URL is used —
+# this avoids duplicate-FB issues when Thai-character URL paths don't dedup.
 MANUAL_FACEBOOK = {
+    "โรงเรียนเทศบาลอ่าวลึกใต้":               "https://www.facebook.com/people/โรงเรียนเทศบาลอ่าวลึกใต้-จังหวัดกระบี่/100063505122666/",
     "โรงเรียนเทศบาลพิบูลสวัสดี":              "https://www.facebook.com/184447268433225/",
     "โรงเรียนเทศบาลปลูกปัญญาฯ":               "https://www.facebook.com/plukpanyaschool/",
     "โรงเรียนเทศบาลบ้านสามกองฯ":              "https://www.facebook.com/SamkongSchool/",
@@ -34,6 +36,24 @@ MANUAL_FACEBOOK = {
 
 # Domains to drop from the source list (e.g. unsafe / broken sites).
 EXCLUDE_DOMAINS = {"nabon.ac.th"}
+
+# Hardcoded fallback coordinates (tambon-center, ~hundreds of meters
+# accuracy). Used when the xlsx Google Map cell has a cid=... share URL
+# we can't extract lat/lng from. The clickable URL still points at the
+# user's preferred (accurate) Google Maps target — only the Leaflet pin
+# uses these fallback coords.
+MANUAL_COORDS = {
+    "โรงเรียนเทศบาลอ่าวลึกใต้":      (8.3760, 98.7310),
+    "โรงเรียนเทศบาลคลองท่อมใต้":     (7.9170, 99.1580),
+    "โรงเรียนเทศบาล 4 มหาราช":        (8.0720, 98.9270),
+    "โรงเรียนเทศบาล 3 ท่าแดง":        (8.0610, 98.9080),
+    "โรงเรียนอนุบาลบางเท่าแม่":      (8.4720, 98.8210),
+    "โรงเรียนบ้านช้างตาย":            (8.1760, 99.1150),
+    "โรงเรียนบ้านช่องพลี":            (8.0390, 98.8210),
+    "โรงเรียนเทศบาลวัดอุปนันทาราม":  (9.9650, 98.6400),
+    "โรงเรียนเทศบาลบ้านเขานิเวศน์":  (9.9620, 98.6360),
+    "โรงเรียนบ้านในวง":               (9.7780, 98.6960),
+}
 
 
 def is_check(v):
@@ -88,20 +108,49 @@ def domain_of(u):
     return url_key(u).split("/")[0]
 
 
+def ensure_coords(school):
+    """
+    If the xlsx Google Map URL didn't yield lat/lng (e.g. it's a
+    `?cid=...` share link), fall back to MANUAL_COORDS so the Leaflet
+    pin still appears. The clickable URL is preserved so users still
+    land on the user's chosen Google Maps target.
+    """
+    name = school["name"]
+    if name not in MANUAL_COORDS:
+        return
+    gm = school.get("google_map")
+    lat, lng = MANUAL_COORDS[name]
+    if not gm:
+        school["google_map"] = {
+            "url": f"https://www.google.com/maps/search/?api=1&query={lat},{lng}",
+            "lat": lat,
+            "lng": lng,
+        }
+        return
+    if gm.get("lat") is None or gm.get("lng") is None:
+        gm["lat"] = lat
+        gm["lng"] = lng
+
+
 def fixup_sources(school):
     """
     Post-process a school's sources list:
       1. Drop any URL whose domain is in EXCLUDE_DOMAINS.
-      2. Ensure a Facebook URL is present (manual override fills in if missing).
-      3. Move the Facebook entry to the top so it's the first thing the user sees.
+      2. If MANUAL_FACEBOOK has an entry for this school, that URL is the
+         single source of truth — strip every other facebook.com link first,
+         then insert the manual one at the top. This avoids duplicate FB
+         entries that slip past url_key dedup (e.g. Thai-character paths).
+      3. Otherwise just move whatever Facebook URL the xlsx provided to top.
     """
     sources = [s for s in school["sources"] if domain_of(s["url"]) not in EXCLUDE_DOMAINS]
 
-    fb_idx = next((i for i, s in enumerate(sources) if "facebook.com" in s["url"].lower()), -1)
-    if fb_idx == -1 and school["name"] in MANUAL_FACEBOOK:
+    if school["name"] in MANUAL_FACEBOOK:
+        sources = [s for s in sources if "facebook.com" not in s["url"].lower()]
         sources.insert(0, {"url": MANUAL_FACEBOOK[school["name"]], "label": "Facebook"})
-    elif fb_idx > 0:
-        sources.insert(0, sources.pop(fb_idx))
+    else:
+        fb_idx = next((i for i, s in enumerate(sources) if "facebook.com" in s["url"].lower()), -1)
+        if fb_idx > 0:
+            sources.insert(0, sources.pop(fb_idx))
 
     school["sources"] = sources
 
@@ -286,13 +335,20 @@ def main():
         if not s["google_map"] and map_link:
             s["google_map"] = parse_map(map_link)
 
-    # Re-id by insertion order so ids are 1..N
+    # Build the final list and post-process sources + coords.
     final = []
-    for i, key in enumerate(order, 1):
+    for key in order:
         rec = schools[key]
-        rec["id"] = i
         fixup_sources(rec)
+        ensure_coords(rec)
         final.append(rec)
+
+    # Sort by the smallest original xlsx ลำดับ so that cards/rows render
+    # left-to-right, top-to-bottom in numerical order regardless of
+    # how the xlsx rows happened to be grouped.
+    final.sort(key=lambda s: min(s["seq_numbers"]) if s["seq_numbers"] else 9_999)
+    for i, rec in enumerate(final, 1):
+        rec["id"] = i
 
     payload = json.dumps(final, ensure_ascii=False, indent=2)
 

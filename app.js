@@ -8,8 +8,26 @@
   const toThai = (n) => String(n).replace(/[0-9]/g, (d) => ARABIC_TO_THAI[d]);
 
   const orgKind = (org) => (org && org.includes("อบจ")) ? "pao" : "municipal";
-  const orgDot = (org) => orgKind(org) === "pao" ? "bg-coral" : "bg-ocean";
   const orgPinColor = (org) => orgKind(org) === "pao" ? "#d96847" : "#0f5e5c";
+
+  // Tiny shape icons used to differentiate เทศบาล vs อบจ. without color —
+  // a filled square for เทศบาล (small/local) and a filled triangle for
+  // อบจ. (provincial). Both use currentColor so they pick up the muted
+  // text color of the surrounding tag.
+  const ORG_GLYPH = {
+    municipal: `<svg class="org-glyph" viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><rect width="10" height="10" fill="currentColor"/></svg>`,
+    pao:       `<svg class="org-glyph" viewBox="0 0 11 10" width="10" height="9" aria-hidden="true"><polygon points="5.5,0 11,10 0,10" fill="currentColor"/></svg>`,
+  };
+  const orgGlyph = (org) => ORG_GLYPH[orgKind(org)] || "";
+
+  // Overview-map markers are colored by province so the geographic spread
+  // is readable at a glance (matches the legend dots on the filter pills).
+  const PROVINCE_COLORS = {
+    "ภูเก็ต": "#d96847",   // orange (coral)
+    "กระบี่":  "#2d7a3a",   // forest green
+    "ระนอง":  "#c43d3d",   // muted red
+  };
+  const provincePinColor = (p) => PROVINCE_COLORS[p] || "#6b6b6b";
 
   // ── OSM tile coords for a (lat,lng) at zoom z, plus the pin's pixel
   // position within the tile (so the pin sits exactly on the school).
@@ -168,7 +186,7 @@
       <a href="#detail" class="overview-card" data-id="${s.id}" style="--d:${(idx * 0.05).toFixed(2)}s">
         <header class="card-head">
           <span class="card-seq">ลำดับ <strong>${seqDisplay(s)}</strong></span>
-          <span class="card-org-tag"><span class="dot ${orgDot(s.org)}"></span>${orgShort(s.org)}</span>
+          <span class="card-org-tag">${orgGlyph(s.org)}${orgShort(s.org)}</span>
         </header>
         <h3 class="card-name">${esc(s.name)}</h3>
         <div class="card-org-name">${esc(s.org || "")}</div>
@@ -244,7 +262,7 @@
         <td class="col-seq"><span class="seq-cell">${seqDisplay(s)}</span></td>
         <td>
           <div class="name-display">${esc(s.name)}</div>
-          <div class="name-meta"><span class="dot ${orgDot(s.org)}"></span>${esc(s.org || "")}</div>
+          <div class="name-meta">${orgGlyph(s.org)}${esc(s.org || "")}</div>
         </td>
         <td class="col-map">${mapThumb(s)}</td>
         <td class="col-levels">${levelChips(s)}</td>
@@ -313,7 +331,7 @@
 
     const markers = [];
     withCoords.forEach((s) => {
-      const color = orgPinColor(s.org);
+      const color = provincePinColor(s.province);
       const icon = L.divIcon({
         className: "school-pin",
         html: `<span class="school-pin-dot" style="background:${color}"></span>`,
@@ -321,11 +339,12 @@
         iconAnchor: [9, 9],
       });
       const m = L.marker([s.google_map.lat, s.google_map.lng], { icon, title: s.name });
-      const orgClass = orgDot(s.org);
+      // Org glyph (square=เทศบาล / triangle=อบจ.) instead of a colored dot,
+      // so the popup matches the same iconography used in cards & rows.
       m.bindPopup(`
         <div class="map-popup">
           <div class="popup-name">${esc(s.name)}</div>
-          <div class="popup-org"><span class="dot ${orgClass}"></span>${esc(s.org || "")}</div>
+          <div class="popup-org">${orgGlyph(s.org)}${esc(s.org || "")}</div>
           <a href="#detail" class="popup-detail-btn" data-id="${s.id}">ดูรายละเอียด →</a>
         </div>
       `);
@@ -468,6 +487,25 @@
     }));
   }
 
+  // Used by the empty-state button: clear search + filters, switch to
+  // overview, and re-render so the user lands on a fresh full grid.
+  function resetFiltersAndGoOverview() {
+    state.q = "";
+    state.province = "all";
+    state.levels.clear();
+    const input = document.getElementById("q");
+    if (input) input.value = "";
+    document.querySelectorAll("[data-province]").forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.province === "all"))
+    );
+    document.querySelectorAll("[data-level]").forEach((b) =>
+      b.setAttribute("aria-pressed", "false")
+    );
+    if (location.hash !== "#overview") location.hash = "#overview";
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function setupBackButton() {
     // Top button (static element)
     const topBtn = document.getElementById("back-to-overview");
@@ -480,6 +518,10 @@
         goBackToOverview();
       }
     });
+
+    // Empty-state reset button — clears filters and returns to overview
+    const emptyBtn = document.getElementById("empty-reset");
+    if (emptyBtn) emptyBtn.addEventListener("click", resetFiltersAndGoOverview);
   }
 
   function setupExpand() {
