@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Source spreadsheets — keep out of public repo
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+inspect_data.py
