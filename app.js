@@ -262,17 +262,17 @@
 
   const state = {
     q: "",
-    org: "all",          // "all" | "municipal" | "pao"
+    province: "all",     // "all" | "ภูเก็ต" | "กระบี่" | "ระนอง"
     levels: new Set(),   // toggleable subset of LEVEL_KEYS
   };
 
   function matches(s) {
-    if (state.org !== "all" && orgKind(s.org) !== state.org) return false;
+    if (state.province !== "all" && s.province !== state.province) return false;
     for (const lv of state.levels) {
       if (!s[lv]) return false;
     }
     if (state.q) {
-      const hay = `${s.name} ${s.address} ${s.org}`.toLowerCase();
+      const hay = `${s.name} ${s.address} ${s.org} ${s.province || ""}`.toLowerCase();
       if (!hay.includes(state.q.toLowerCase())) return false;
     }
     return true;
@@ -390,9 +390,9 @@
     wrap.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-pill");
       if (!btn) return;
-      if (btn.dataset.org) {
-        state.org = btn.dataset.org;
-        wrap.querySelectorAll("[data-org]").forEach((b) => {
+      if (btn.dataset.province) {
+        state.province = btn.dataset.province;
+        wrap.querySelectorAll("[data-province]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
       } else if (btn.dataset.level) {

@@ -3,8 +3,298 @@
 const SCHOOLS = [
   {
     "id": 1,
+    "name": "โรงเรียนเทศบาลอ่าวลึกใต้",
+    "org": "เทศบาลตำบลอ่าวลึกใต้",
+    "province": "กระบี่",
+    "address": "ต.อ่าวลึกใต้ อ.อ่าวลึก จ.กระบี่ 81110",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.376,98.731",
+      "lat": 8.376,
+      "lng": 98.731
+    },
+    "sources": [],
+    "vacancy": 1,
+    "positions": [
+      "01-2-08-5600-292"
+    ],
+    "seq_numbers": [
+      3
+    ],
+    "student_count": "ขนาดเล็ก-กลาง (ไม่มีตัวเลขชัดเจน)",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "โรงเรียนเทศบาลแห่งเดียวในอ.อ่าวลึก",
+    "awards": null,
+    "highlights": "กระบี่: อ.อ่าวลึก ใกล้ท่องเที่ยว ขนาดน่าจะเล็ก",
+    "extra_sources": "รายชื่อโรงเรียนกระบี่",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 2,
+    "name": "โรงเรียนเทศบาลคลองท่อมใต้",
+    "org": "เทศบาลตำบลคลองท่อมใต้",
+    "province": "กระบี่",
+    "address": "ต.คลองท่อมใต้ อ.คลองท่อม จ.กระบี่ 81120",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=7.917,99.158",
+      "lat": 7.917,
+      "lng": 99.158
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/tbktschool",
+        "label": "Facebook"
+      },
+      {
+        "url": "https://tbktschool.ac.th",
+        "label": "tbktschool.ac.th"
+      }
+    ],
+    "vacancy": 2,
+    "positions": [
+      "01-2-08-6500-056",
+      "01-2-08-6500-027"
+    ],
+    "seq_numbers": [
+      20,
+      21
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "โรงเรียนเทศบาลแห่งเดียวในอ.คลองท่อม",
+    "awards": null,
+    "highlights": "กระบี่: อ.คลองท่อม (ใต้กระบี่ลงไป) ห่างจากตัวเมือง",
+    "extra_sources": "tbktschool.ac.th, khlongthomcity.go.th",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 3,
+    "name": "โรงเรียนเทศบาล 4 มหาราช",
+    "org": "เทศบาลเมืองกระบี่",
+    "province": "กระบี่",
+    "address": "ต.กระบี่ใหญ่ อ.เมืองกระบี่ จ.กระบี่ 81000",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.072,98.927",
+      "lat": 8.072,
+      "lng": 98.927
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/MaharachMunicipalSchool4",
+        "label": "Facebook"
+      }
+    ],
+    "vacancy": 1,
+    "positions": [
+      "01-2-08-6500-208"
+    ],
+    "seq_numbers": [
+      22
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "1 ใน 4 โรงเรียนเทศบาลเมืองกระบี่",
+    "awards": null,
+    "highlights": "กระบี่: อ.เมือง (กระบี่ใหญ่)",
+    "extra_sources": "FB MaharachMunicipalSchool4",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 4,
+    "name": "โรงเรียนเทศบาล 3 ท่าแดง",
+    "org": "เทศบาลเมืองกระบี่",
+    "province": "กระบี่",
+    "address": "290 ถ.มหาราช ต.ปากน้ำ อ.เมืองกระบี่ จ.กระบี่ 81000",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.061,98.908",
+      "lat": 8.061,
+      "lng": 98.908
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/100067055134888",
+        "label": "Facebook"
+      }
+    ],
+    "vacancy": 1,
+    "positions": [
+      "01-2-08-6500-203"
+    ],
+    "seq_numbers": [
+      23
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "1 ใน 4 โรงเรียนเทศบาลเมืองกระบี่",
+    "awards": null,
+    "highlights": "กระบี่: อ.เมือง ปากน้ำ",
+    "extra_sources": "รายชื่อโรงเรียนกระบี่",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 5,
+    "name": "โรงเรียนอนุบาลบางเท่าแม่",
+    "org": "อบต.เขาต่อ",
+    "province": "กระบี่",
+    "address": "ต.เขาต่อ อ.ปลายพระยา จ.กระบี่ 81160",
+    "levels": "อ.1 - อ.3",
+    "kindergarten": true,
+    "primary": false,
+    "lower_secondary": false,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.472,98.821",
+      "lat": 8.472,
+      "lng": 98.821
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/xnubalbangtheam",
+        "label": "Facebook"
+      },
+      {
+        "url": "https://anubanbangtaomae.ac.th",
+        "label": "anubanbangtaomae.ac.th"
+      }
+    ],
+    "vacancy": 1,
+    "positions": [
+      "01-3-08-6500-073"
+    ],
+    "seq_numbers": [
+      24
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "อนุบาลล้วน",
+    "awards": null,
+    "highlights": "กระบี่: อ.ปลายพระยา สังกัด อบต.เขาต่อ ขนาดเล็ก",
+    "extra_sources": "รายชื่อโรงเรียนกระบี่",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 6,
+    "name": "โรงเรียนบ้านช้างตาย",
+    "org": "อบต.เขาดิน",
+    "province": "กระบี่",
+    "address": "ทางหลวงจังหวัดหมายเลข 4037 ต.เขาพนม อ.เขาพนม จ.กระบี่ 81140",
+    "levels": "อ.1 - ป.6",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": false,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.176,99.115",
+      "lat": 8.176,
+      "lng": 99.115
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/100095514283778",
+        "label": "Facebook"
+      }
+    ],
+    "vacancy": 1,
+    "positions": [
+      "01-3-08-6500-024"
+    ],
+    "seq_numbers": [
+      26
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "ขนาดเล็ก สังกัด อบต.",
+    "awards": null,
+    "highlights": "กระบี่: อ.เขาพนม ห่างไกล ขนาดเล็ก",
+    "extra_sources": "รายชื่อโรงเรียนกระบี่",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 7,
+    "name": "โรงเรียนบ้านช่องพลี",
+    "org": "อบต.อ่าวนาง",
+    "province": "กระบี่",
+    "address": "ต.อ่าวนาง อ.เมืองกระบี่ จ.กระบี่ 81000",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=8.039,98.821",
+      "lat": 8.039,
+      "lng": 98.821
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/chongphlischool",
+        "label": "Facebook"
+      },
+      {
+        "url": "https://chongplee.ac.th",
+        "label": "chongplee.ac.th"
+      }
+    ],
+    "vacancy": 1,
+    "positions": [
+      "01-3-08-6500-265"
+    ],
+    "seq_numbers": [
+      27
+    ],
+    "student_count": "ไม่มีตัวเลขชัดเจน",
+    "staff_count": "ไม่มีตัวเลขชัดเจน",
+    "special_programs": "ขนาดเล็ก สังกัด อบต.อ่าวนาง",
+    "awards": null,
+    "highlights": "กระบี่: อ.เมือง อ่าวนาง (พื้นที่ท่องเที่ยว) ขนาดเล็ก",
+    "extra_sources": "รายชื่อโรงเรียนกระบี่",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 8,
     "name": "โรงเรียนเทศบาลเมืองภูเก็ต",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "75 ถ.กรุงเทพ ต.ตลาดเหนือ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.1 - ม.6",
     "kindergarten": true,
@@ -47,9 +337,10 @@ const SCHOOLS = [
     "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sunday Walking Street ถลาง, ถนนถลาง, สวนหลวง ร.9, อนุสาวรีย์ท้าวเทพกระษัตรี (ปลายเมือง)"
   },
   {
-    "id": 2,
+    "id": 9,
     "name": "โรงเรียนเทศบาลวัดขจรรังสรรค์",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "26 ถ.กระบี่ ต.ตลาดเหนือ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.1 - ม.3",
     "kindergarten": true,
@@ -90,9 +381,10 @@ const SCHOOLS = [
     "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sino-Portuguese architecture, ถ.ถลาง, Sunday Walking Street, พิพิธภัณฑ์ภูเก็ตไทยหัว, วัดมงคลนิมิตร"
   },
   {
-    "id": 3,
+    "id": 10,
     "name": "โรงเรียนเทศบาลพิบูลสวัสดี",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "6 ถ.ดำรง ต.ตลาดใหญ่ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.1 - ป.6",
     "kindergarten": true,
@@ -135,9 +427,10 @@ const SCHOOLS = [
     "landmarks": "ภูเก็ตเมืองเก่า, ถ.ถลาง, สวนเฉลิมพระเกียรติ 72 พรรษา (สวนหลวง ร.9), Limelight Avenue Phuket, Phuket Trickeye Museum"
   },
   {
-    "id": 4,
+    "id": 11,
     "name": "โรงเรียนเทศบาลปลูกปัญญาฯ",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "21 ถ.สตูล ต.ตลาดเหนือ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.1 - ม.6",
     "kindergarten": true,
@@ -178,9 +471,10 @@ const SCHOOLS = [
     "landmarks": "ภูเก็ตเมืองเก่า (Old Phuket Town), Sunday Walking Street, ถ.ถลาง, พิพิธภัณฑ์ภูเก็ตไทยหัว, วัดมงคลนิมิตร"
   },
   {
-    "id": 5,
+    "id": 12,
     "name": "โรงเรียนเทศบาลบ้านสามกองฯ",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "ต.รัษฎา อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.1 - ม.3",
     "kindergarten": true,
@@ -221,9 +515,10 @@ const SCHOOLS = [
     "landmarks": "สะพานหิน (Saphan Hin), สวนสาธารณะสะพานหิน, อนุสาวรีย์เจ้าฟ้า, ท่าเรือน้ำลึกภูเก็ต, Limelight Avenue"
   },
   {
-    "id": 6,
+    "id": 13,
     "name": "โรงเรียนเทศบาลบ้านบางเหนียว",
     "org": "เทศบาลนครภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "450/2 ถ.ภูเก็ต ต.ตลาดใหญ่ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "ป.1 - ป.6",
     "kindergarten": false,
@@ -272,9 +567,10 @@ const SCHOOLS = [
     "landmarks": "ภูเก็ตเมืองเก่า, ถ.ถลาง, ลานมังกร (Dragon Square), สวนเฉลิมพระเกียรติ 72 พรรษา, สะพานหิน"
   },
   {
-    "id": 7,
+    "id": 14,
     "name": "โรงเรียน อบจ.เมืองภูเก็ต",
     "org": "อบจ.ภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "ต.ราไวย์ อ.เมืองภูเก็ต จ.ภูเก็ต 83100",
     "levels": "อ.2 - ม.6",
     "kindergarten": true,
@@ -319,9 +615,10 @@ const SCHOOLS = [
     "landmarks": "หาดราไวย์, แหลมพรหมเทพ (Promthep Cape), หาดในหาน, หาดยานุ้ย, ลานพระพรหม, สะพานหินราไวย์"
   },
   {
-    "id": 8,
+    "id": 15,
     "name": "โรงเรียน อบจ.บ้านไม้เรียบ (ตันติโกวิทบำรุง)",
     "org": "อบจ.ภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "91/57 หมู่ 6 ซ.น้ำตกกะทู้ ถ.วิชิตสงคราม ต.กะทู้ อ.กะทู้ จ.ภูเก็ต 83120",
     "levels": "อ.2 - ป.6",
     "kindergarten": true,
@@ -368,9 +665,10 @@ const SCHOOLS = [
     "landmarks": "น้ำตกกะทู้ (Kathu Waterfall), ป่าตอง (10 นาที), Phuket Wake Park, พิพิธภัณฑ์เหมืองแร่กะทู้, วัดกะทู้, Loch Palm Golf Club"
   },
   {
-    "id": 9,
+    "id": 16,
     "name": "โรงเรียน อบจ.บ้านนาบอน",
     "org": "อบจ.ภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "42 ถ.เจ้าฟ้าตะวันออก ต.ฉลอง อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.2 - ป.6",
     "kindergarten": true,
@@ -413,9 +711,10 @@ const SCHOOLS = [
     "landmarks": "วัดฉลอง (วัดไชยธาราราม), พระใหญ่ภูเก็ต (Big Buddha), แหลมหงา-เขาขาด, ห้าแยกฉลอง, ท่าเรือฉลอง"
   },
   {
-    "id": 10,
+    "id": 17,
     "name": "โรงเรียน อบจ.บ้านตลาดเหนือ (วันครู 2502)",
     "org": "อบจ.ภูเก็ต",
+    "province": "ภูเก็ต",
     "address": "58/34 ถ.เจ้าฟ้าตะวันออก ต.ตลาดเหนือ อ.เมืองภูเก็ต จ.ภูเก็ต 83000",
     "levels": "อ.2 - ม.6",
     "kindergarten": true,
@@ -458,5 +757,141 @@ const SCHOOLS = [
     "dorms_condos": "Sugar Palm Residence, Connext Condominium, The Wide Condotel, Suan Luang Apartment Phuket",
     "rental_houses": "บ้านเช่าย่านเจ้าฟ้า-สวนหลวง, ทาวน์โฮมย่านวิชิตสงคราม, บ้านเดี่ยวย่านศักดิเดช",
     "landmarks": "Central Festival Phuket, ภูเก็ตเมืองเก่า, สวนหลวง ร.9, ถ.ถลาง, Lotus's Phuket"
+  },
+  {
+    "id": 18,
+    "name": "โรงเรียนเทศบาลวัดอุปนันทาราม",
+    "org": "เทศบาลเมืองระนอง",
+    "province": "ระนอง",
+    "address": "134 ถ.ท่าเมือง ต.เขานิเวศน์ อ.เมืองระนอง จ.ระนอง 85000",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=9.965,98.64",
+      "lat": 9.965,
+      "lng": 98.64
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/100057330825404",
+        "label": "Facebook"
+      },
+      {
+        "url": "https://uppanan-ranong.ac.th",
+        "label": "uppanan-ranong.ac.th"
+      }
+    ],
+    "vacancy": 0,
+    "positions": [
+      "48-2-08-6500-076",
+      "48-2-08-6500-073",
+      "48-2-08-6500-062",
+      "48-2-08-6500-051"
+    ],
+    "seq_numbers": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "student_count": "~822-896 คน",
+    "staff_count": "ครู 48-55 คน",
+    "special_programs": "ครบรอบ 100 ปี (2568), เปิดอาคารราชพฤกษ์",
+    "awards": null,
+    "highlights": "ระนอง: อ.เมือง ขนาดกลาง อ.1-ม.3",
+    "extra_sources": "ranongcity.go.th, ระนอง PEO",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 19,
+    "name": "โรงเรียนเทศบาลบ้านเขานิเวศน์",
+    "org": "เทศบาลเมืองระนอง",
+    "province": "ระนอง",
+    "address": "4 ซ.ลุวัง ต.เขานิเวศน์ อ.เมืองระนอง จ.ระนอง 85000",
+    "levels": "อ.1 - ม.3",
+    "kindergarten": true,
+    "primary": true,
+    "lower_secondary": true,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=9.962,98.636",
+      "lat": 9.962,
+      "lng": 98.636
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/361086113902996",
+        "label": "Facebook"
+      },
+      {
+        "url": "https://khaoniwat.ac.th",
+        "label": "khaoniwat.ac.th"
+      }
+    ],
+    "vacancy": 0,
+    "positions": [
+      "48-2-08-6500-027",
+      "48-2-08-6500-020"
+    ],
+    "seq_numbers": [
+      12,
+      13
+    ],
+    "student_count": "~843 คน",
+    "staff_count": "ครู 53 คน",
+    "special_programs": "ปรับปรุงหลักสูตรปี 2569",
+    "awards": null,
+    "highlights": "ระนอง: อ.เมือง ขนาดใกล้เคียง วัดอุปนันทาราม",
+    "extra_sources": "khaoniwat.ac.th, ระนอง PEO",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
+  },
+  {
+    "id": 20,
+    "name": "โรงเรียนบ้านในวง",
+    "org": "อบจ.ระนอง",
+    "province": "ระนอง",
+    "address": "ต.ในวงเหนือ อ.ละอุ่น จ.ระนอง 85130",
+    "levels": "ป.1 - ป.6",
+    "kindergarten": false,
+    "primary": true,
+    "lower_secondary": false,
+    "upper_secondary": false,
+    "google_map": {
+      "url": "https://www.google.com/maps/search/?api=1&query=9.778,98.696",
+      "lat": 9.778,
+      "lng": 98.696
+    },
+    "sources": [
+      {
+        "url": "https://facebook.com/naiwong.school",
+        "label": "Facebook"
+      }
+    ],
+    "vacancy": 0,
+    "positions": [
+      "48-1-08-6500-109"
+    ],
+    "seq_numbers": [
+      25
+    ],
+    "student_count": "~275 คน",
+    "staff_count": "ครู 21 คน",
+    "special_programs": "ประถมล้วน ขนาดเล็ก",
+    "awards": null,
+    "highlights": "ระนอง: อ.ละอุ่น (ห่างไกล) สังกัด อบจ.ระนอง",
+    "extra_sources": "ระนอง PEO 2566",
+    "nearby_places": null,
+    "dorms_condos": null,
+    "rental_houses": null,
+    "landmarks": null
   }
 ];

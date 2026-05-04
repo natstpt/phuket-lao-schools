@@ -18,6 +18,9 @@ CHECK = "✓"
 
 LEVEL_KEYS = ["kindergarten", "primary", "lower_secondary", "upper_secondary"]
 
+# Filter to schools in these southern provinces.
+SOUTHERN_PROVINCES = {"ภูเก็ต", "กระบี่", "ระนอง"}
+
 # Manual Facebook overrides — used when the xlsx doesn't already carry
 # a facebook.com URL for a school. Verified via web search.
 MANUAL_FACEBOOK = {
@@ -35,6 +38,19 @@ EXCLUDE_DOMAINS = {"nabon.ac.th"}
 
 def is_check(v):
     return isinstance(v, str) and CHECK in v
+
+
+def extract_province(address):
+    """Pull the province name out of a Thai address line like '...จ.กระบี่ 81000'."""
+    if not address:
+        return None
+    m = re.search(r"จ\.(\S+)", str(address))
+    if not m:
+        return None
+    prov = m.group(1)
+    # Strip trailing digits / punctuation that may have stuck on
+    prov = re.sub(r"[\d\s].*$", "", prov)
+    return prov.strip() or None
 
 
 def clean_text(v):
@@ -161,7 +177,8 @@ def main():
          awards, highlights, extra_sources,
          nearby_places, dorms_condos, rental_houses, landmarks) = (c.value for c in cells)
 
-        if not address or "ภูเก็ต" not in str(address):
+        province = extract_province(address)
+        if not address or province not in SOUTHERN_PROVINCES:
             continue
         if not name:
             continue
@@ -180,6 +197,7 @@ def main():
                 "id": len(schools) + 1,
                 "name": name,
                 "org": str(org).strip() if org else "",
+                "province": province,
                 "address": address,
                 "levels": str(level_range).strip() if level_range else "",
                 "kindergarten": is_check(k),
