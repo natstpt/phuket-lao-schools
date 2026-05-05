@@ -22,8 +22,13 @@ LEVEL_KEYS = ["kindergarten", "primary", "lower_secondary", "upper_secondary"]
 SOUTHERN_PROVINCES = {"ภูเก็ต", "กระบี่", "ระนอง"}
 
 # Authoritative Facebook URLs by school name. If a school is listed here,
-# any FB links pulled from the xlsx are dropped and only this URL is used —
-# this avoids duplicate-FB issues when Thai-character URL paths don't dedup.
+# any FB links pulled from the xlsx are dropped and only these are used —
+# avoids duplicate-FB issues when Thai-character URL paths don't dedup.
+#
+# Value can be:
+#   • a single URL string                        → labeled "Facebook"
+#   • a list of strings/tuples                    → multiple FB pages, in order
+#   • a tuple (url, label) inside the list        → custom label
 MANUAL_FACEBOOK = {
     "โรงเรียนเทศบาลอ่าวลึกใต้":               "https://www.facebook.com/people/โรงเรียนเทศบาลอ่าวลึกใต้-จังหวัดกระบี่/100063505122666/",
     "โรงเรียนเทศบาลพิบูลสวัสดี":              "https://www.facebook.com/184447268433225/",
@@ -32,6 +37,11 @@ MANUAL_FACEBOOK = {
     "โรงเรียน อบจ.บ้านไม้เรียบ (ตันติโกวิทบำรุง)": "https://www.facebook.com/banmaireab/",
     "โรงเรียน อบจ.บ้านนาบอน":                 "https://www.facebook.com/100063651889627/",
     "โรงเรียน อบจ.บ้านตลาดเหนือ (วันครู 2502)":  "https://www.facebook.com/wankroo2502/",
+    "โรงเรียนบ้านช่องพลี": [
+        "https://www.facebook.com/cp.ac.th/",
+        ("https://www.facebook.com/p/โรงเรียนบ้านช่องพลี-ฝ่ายมัธยม-100065335666012/",
+         "Facebook (ฝ่ายมัธยม)"),
+    ],
 }
 
 # Domains to drop from the source list (e.g. unsafe / broken sites).
@@ -132,21 +142,37 @@ def ensure_coords(school):
         gm["lng"] = lng
 
 
+def _normalize_fb_entries(raw):
+    """Coerce a MANUAL_FACEBOOK value into a list of {url, label} dicts.
+    Accepts a plain string, a list of strings, or a list with (url, label)
+    tuples for custom labels (e.g. "Facebook (ฝ่ายมัธยม)")."""
+    items = raw if isinstance(raw, list) else [raw]
+    out = []
+    for it in items:
+        if isinstance(it, tuple):
+            out.append({"url": it[0], "label": it[1]})
+        else:
+            out.append({"url": it, "label": "Facebook"})
+    return out
+
+
 def fixup_sources(school):
     """
     Post-process a school's sources list:
       1. Drop any URL whose domain is in EXCLUDE_DOMAINS.
-      2. If MANUAL_FACEBOOK has an entry for this school, that URL is the
-         single source of truth — strip every other facebook.com link first,
-         then insert the manual one at the top. This avoids duplicate FB
-         entries that slip past url_key dedup (e.g. Thai-character paths).
-      3. Otherwise just move whatever Facebook URL the xlsx provided to top.
+      2. If MANUAL_FACEBOOK has an entry, those FB URLs are the single
+         source of truth — strip every other facebook.com link, then
+         prepend the manual ones in their declared order. Avoids
+         duplicate FB entries that slip past url_key dedup.
+      3. Otherwise just move whatever Facebook URL the xlsx provided to
+         the top of the list.
     """
     sources = [s for s in school["sources"] if domain_of(s["url"]) not in EXCLUDE_DOMAINS]
 
     if school["name"] in MANUAL_FACEBOOK:
         sources = [s for s in sources if "facebook.com" not in s["url"].lower()]
-        sources.insert(0, {"url": MANUAL_FACEBOOK[school["name"]], "label": "Facebook"})
+        fb_entries = _normalize_fb_entries(MANUAL_FACEBOOK[school["name"]])
+        sources = fb_entries + sources
     else:
         fb_idx = next((i for i, s in enumerate(sources) if "facebook.com" in s["url"].lower()), -1)
         if fb_idx > 0:

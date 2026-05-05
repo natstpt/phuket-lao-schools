@@ -669,11 +669,11 @@ const SCHOOLS = [
     "org": "อบต.อ่าวนาง",
     "province": "กระบี่",
     "address": "ต.อ่าวนาง อ.เมืองกระบี่ จ.กระบี่ 81000",
-    "levels": "อ.1 - ม.3",
+    "levels": "อ.1 - ม.6",
     "kindergarten": true,
     "primary": true,
     "lower_secondary": true,
-    "upper_secondary": false,
+    "upper_secondary": true,
     "google_map": {
       "url": "https://maps.google.com/?cid=5558880798353367457&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ",
       "lat": 8.039,
@@ -681,12 +681,12 @@ const SCHOOLS = [
     },
     "sources": [
       {
-        "url": "https://facebook.com/chongphlischool",
+        "url": "https://www.facebook.com/cp.ac.th/",
         "label": "Facebook"
       },
       {
-        "url": "https://chongplee.ac.th",
-        "label": "chongplee.ac.th"
+        "url": "https://www.facebook.com/p/โรงเรียนบ้านช่องพลี-ฝ่ายมัธยม-100065335666012/",
+        "label": "Facebook (ฝ่ายมัธยม)"
       }
     ],
     "vacancy": 1,
