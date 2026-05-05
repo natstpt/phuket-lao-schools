@@ -469,6 +469,195 @@
     if (principles) principles.innerHTML = rankingPrinciplesHTML();
   }
 
+  // ── Profile view (deep dive of a single school) ──────────────
+  // Built from PROFILES (profile.js). Each section's blocks map to a
+  // small set of types: paragraph (with optional source citation),
+  // key-value pairs, plain ul, pros/cons with bold headlines, numbered
+  // recommendations, and a sidebar callout.
+
+  // Profile content text is HAND-AUTHORED (not user input), so we keep
+  // <strong>/<em>/<a> in the source. Sanitize for safety in a way that
+  // still allows our limited tag set.
+  // (We don't escape here — the data is trusted, written by us.)
+
+  function blockHTML(b) {
+    switch (b.type) {
+      case "p": {
+        const src = b.source ? `<span class="src">${esc(b.source)}</span>` : "";
+        return `<p>${b.text}${src}</p>`;
+      }
+      case "kv": {
+        const rows = b.items.map(
+          (it) => `<dt>${esc(it.key)}</dt><dd>${it.value}</dd>`
+        ).join("");
+        return `<dl class="profile-kv">${rows}</dl>`;
+      }
+      case "ul": {
+        const lis = b.items.map((it) => `<li>${it}</li>`).join("");
+        return `<ul class="profile-ul">${lis}</ul>`;
+      }
+      case "pros":
+      case "cons": {
+        const cls = b.type === "pros" ? "profile-pros" : "profile-cons";
+        const lis = b.items.map((it) => {
+          const src = it.source ? `<span class="src">${esc(it.source)}</span>` : "";
+          return `<li><strong>${it.headline}</strong> — ${it.body}${src}</li>`;
+        }).join("");
+        return `<ul class="${cls}">${lis}</ul>`;
+      }
+      case "rec": {
+        const lis = b.items.map((it) => `<li>${it}</li>`).join("");
+        return `<ol class="profile-rec">${lis}</ol>`;
+      }
+      case "estimates": {
+        // Each row: label / value (Fraunces display) / optional note.
+        // A `total: true` row spans full width and gets an ocean accent.
+        const rows = b.items.map((it) => {
+          const cls = it.total ? "profile-estimate total" : "profile-estimate";
+          const note = it.note ? `<div class="estimate-note">${esc(it.note)}</div>` : "";
+          return `
+            <div class="${cls}">
+              <div class="estimate-label">${esc(it.label)}</div>
+              <div class="estimate-value">${esc(it.value)}</div>
+              ${note}
+            </div>
+          `;
+        }).join("");
+        return `<div class="profile-estimates">${rows}</div>`;
+      }
+      case "callout": {
+        const lis = b.items.map((it) => `<li>${it}</li>`).join("");
+        return `
+          <div class="profile-callout">
+            ${b.label ? `<div class="profile-callout-label">${esc(b.label)}</div>` : ""}
+            <ul>${lis}</ul>
+          </div>
+        `;
+      }
+      default:
+        return "";
+    }
+  }
+
+  function profileHTML(p) {
+    const actions = (p.actions || []).map((a) =>
+      `<a class="profile-action" href="${a.href}" target="_blank" rel="noopener">${esc(a.label)} ↗</a>`
+    ).join("");
+
+    const meta = (p.meta || []).map((m) => {
+      const inner = m.href
+        ? `<a href="${m.href}" target="_blank" rel="noopener">${esc(m.text)}</a>`
+        : esc(m.text);
+      return `<span>${m.icon ? m.icon + " " : ""}${inner}</span>`;
+    }).join("");
+
+    const sections = p.sections.map((s) => {
+      const blocks = s.blocks.map(blockHTML).join("");
+      return `
+        <section class="profile-section">
+          <h3><span class="profile-icon">${s.icon}</span>${esc(s.title)}</h3>
+          ${blocks}
+        </section>
+      `;
+    }).join("");
+
+    return `
+      <div id="profile-map" class="profile-map" aria-label="แผนที่โรงเรียนและสถานที่ใกล้เคียง"></div>
+      <header class="profile-header">
+        <h2 class="profile-title">${esc(p.name)}</h2>
+        ${actions ? `<div class="profile-actions">${actions}</div>` : ""}
+        ${p.tagline ? `<div class="profile-tagline">${esc(p.tagline)}</div>` : ""}
+        ${meta ? `<div class="profile-meta">${meta}</div>` : ""}
+      </header>
+      ${sections}
+    `;
+  }
+
+  // ── Profile map (separate Leaflet instance from the overview map) ──
+  let profileMap = null;
+  let profileMarkerLayer = null;
+
+  function initProfileMap() {
+    const el = document.getElementById("profile-map");
+    if (!el || !window.L || profileMap) return;
+    profileMap = L.map(el, { scrollWheelZoom: false }).setView([7.88, 98.385], 13);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(profileMap);
+    profileMarkerLayer = L.layerGroup().addTo(profileMap);
+  }
+
+  function renderProfileMap(profile) {
+    if (!profileMap || !profileMarkerLayer) return;
+    profileMarkerLayer.clearLayers();
+    const markers = [];
+
+    // School marker — coral, larger, prominent. Coords come from data.js
+    // via fuzzy name match, so they always stay in sync with the rest.
+    const schoolRec = findSchoolByMatch(profile.match);
+    if (schoolRec && schoolRec.google_map && typeof schoolRec.google_map.lat === "number") {
+      const { lat, lng } = schoolRec.google_map;
+      const icon = L.divIcon({
+        className: "school-pin profile-school-pin",
+        html: `<span class="school-pin-dot"></span>`,
+        iconSize: [22, 22],
+        iconAnchor: [11, 11],
+      });
+      const m = L.marker([lat, lng], { icon, title: schoolRec.name, zIndexOffset: 1000 });
+      m.bindPopup(`
+        <div class="map-popup">
+          <div class="popup-name">${esc(schoolRec.name)}</div>
+          <div class="popup-org">${orgGlyph(schoolRec.org)}${esc(schoolRec.org || "")}</div>
+        </div>
+      `);
+      profileMarkerLayer.addLayer(m);
+      markers.push(m);
+    }
+
+    // Landmark markers — small ink dots, popup links to Google Maps
+    (profile.landmarks || []).forEach((p) => {
+      if (typeof p.lat !== "number" || typeof p.lng !== "number") return;
+      const icon = L.divIcon({
+        className: "school-pin profile-landmark-pin",
+        html: `<span class="school-pin-dot"></span>`,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6],
+      });
+      const m = L.marker([p.lat, p.lng], { icon, title: p.name });
+      const query = p.plus_code ? `${p.plus_code} Phuket` : `${p.name} Phuket`;
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+      m.bindPopup(`
+        <div class="map-popup">
+          <div class="popup-name">${esc(p.name)}</div>
+          <a href="${url}" class="popup-detail-btn" target="_blank" rel="noopener">เปิดใน Google Maps ↗</a>
+        </div>
+      `);
+      profileMarkerLayer.addLayer(m);
+      markers.push(m);
+    });
+
+    if (markers.length > 1) {
+      const group = L.featureGroup(markers);
+      profileMap.fitBounds(group.getBounds(), { padding: [40, 40], maxZoom: 14 });
+    } else if (markers.length === 1) {
+      profileMap.setView(markers[0].getLatLng(), 14);
+    }
+  }
+
+  function renderProfile() {
+    const el = document.getElementById("profile-content");
+    if (!el || typeof PROFILES === "undefined") return;
+    // For now, always show the first profile. If more are added later,
+    // a sub-selector can be wired up.
+    const first = Object.values(PROFILES)[0];
+    if (!first) return;
+    el.innerHTML = profileHTML(first);
+    // Map needs a real DOM node, so init after innerHTML is set
+    initProfileMap();
+    renderProfileMap(first);
+  }
+
   function setupRankingLinks() {
     // "ดูรายละเอียดในตาราง →" inside a ranking card jumps to the matching
     // school's detail row (same behavior as clicking an overview card).
@@ -638,6 +827,7 @@
     const overview = document.getElementById("view-overview");
     const detail   = document.getElementById("view-detail");
     const ranking  = document.getElementById("view-ranking");
+    const profile  = document.getElementById("view-profile");
     const searchWrap = document.querySelector(".search-wrap");
     const tabs = document.querySelectorAll(".tab");
 
@@ -645,14 +835,21 @@
       overview.hidden = name !== "overview";
       detail.hidden   = name !== "detail";
       if (ranking) ranking.hidden = name !== "ranking";
-      // Search bar applies to overview/detail only — hide it on ranking
-      // since rankings are static editorial content, not filterable.
-      if (searchWrap) searchWrap.style.display = (name === "ranking") ? "none" : "";
+      if (profile) profile.hidden = name !== "profile";
+      // Search bar only applies to overview/detail — hide on ranking and
+      // profile since those are static editorial content, not filterable.
+      if (searchWrap) {
+        const useSearch = name === "overview" || name === "detail";
+        searchWrap.style.display = useSearch ? "" : "none";
+      }
       tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.view === name)));
       // Leaflet needs a nudge after the container becomes visible — its
       // size calc runs once at init and won't notice the show/hide flip.
       if (name === "overview" && mapInstance) {
         setTimeout(() => mapInstance.invalidateSize(), 50);
+      }
+      if (name === "profile" && profileMap) {
+        setTimeout(() => profileMap.invalidateSize(), 50);
       }
     }
 
@@ -660,6 +857,7 @@
       const h = location.hash;
       if (h === "#detail")  return "detail";
       if (h === "#ranking") return "ranking";
+      if (h === "#profile") return "profile";
       return "overview";
     }
 
@@ -681,6 +879,7 @@
     setupBackButton();
     setupRankingLinks();
     renderRankings();
+    renderProfile();
     render();
   });
 })();

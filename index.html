@@ -787,6 +787,341 @@
       color: #d96847;
     }
 
+    /* ── Profile view (single-school deep dive) ── */
+    #view-profile { max-width: 760px; margin: 0 auto; }
+
+    /* Profile map — shows the school + surrounding landmarks. School pin
+       is coral and slightly larger; landmark pins are smaller ink dots. */
+    .profile-map {
+      width: 100%;
+      height: 320px;
+      border: 1px solid #e6e3da;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f0ede4;
+      margin-bottom: 22px;
+      z-index: 1;
+    }
+    @media (min-width: 768px) {
+      .profile-map { height: 400px; margin-bottom: 26px; }
+    }
+    /* School pin — bigger, coral, prominent */
+    .profile-school-pin .school-pin-dot {
+      width: 22px; height: 22px;
+      background: #d96847;
+      border: 3px solid #fafaf7;
+      box-shadow: 0 2px 6px rgba(0,0,0,.45);
+    }
+    /* Landmark pin — small, ink, secondary */
+    .profile-landmark-pin .school-pin-dot {
+      width: 12px; height: 12px;
+      background: #1a1a1a;
+      border: 2px solid #fafaf7;
+      box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+
+    .profile-header {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e6e3da;
+    }
+    .profile-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(22px, 5vw, 30px);
+      letter-spacing: -0.018em;
+      line-height: 1.18;
+      color: #1a1a1a;
+      margin: 0 0 10px;
+      font-optical-sizing: auto;
+    }
+    .profile-tagline {
+      font-family: "Fraunces", Georgia, serif;
+      font-style: italic;
+      font-size: 15px;
+      color: #0f5e5c;
+      margin-bottom: 14px;
+    }
+
+    /* Outline pill buttons sitting right under the title — Facebook +
+       school website. Touch-friendly (~38px tall), hover fills ink. */
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 16px;
+    }
+    .profile-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 9px 18px;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 99px;
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: background-color .2s, color .2s, transform .15s;
+    }
+    .profile-action:hover {
+      background: #1a1a1a;
+      color: #fafaf7;
+      transform: translateY(-1px);
+    }
+    .profile-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      font-size: 13px;
+      color: #6b6b6b;
+      line-height: 1.7;
+    }
+    .profile-meta a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: #c9c4b6;
+      text-underline-offset: 3px;
+    }
+    .profile-meta a:hover { text-decoration-color: #1a1a1a; color: #1a1a1a; }
+
+    .profile-section {
+      padding: 22px 0 6px;
+      border-top: 1px solid #e6e3da;
+    }
+    .profile-section:first-of-type { border-top: none; padding-top: 0; }
+    .profile-section h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.014em;
+      line-height: 1.2;
+      color: #1a1a1a;
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-optical-sizing: auto;
+    }
+    .profile-section h3 .profile-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+    .profile-section p {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: #1a1a1a;
+      margin: 0 0 14px;
+    }
+    .profile-section p .src,
+    .profile-section li .src {
+      font-size: 11.5px;
+      font-style: italic;
+      color: #6b6b6b;
+      margin-left: 4px;
+    }
+    .profile-section p .src::before,
+    .profile-section li .src::before { content: "— "; }
+
+    /* Generic ul under a section (e.g. personnel structure) */
+    .profile-section ul.profile-ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .profile-section ul.profile-ul li {
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .profile-section ul.profile-ul li::before {
+      content: "·";
+      position: absolute;
+      left: 4px; top: -2px;
+      color: #6b6b6b;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    /* Key-value pairs (general info) */
+    .profile-kv {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px 18px;
+      margin: 14px 0 4px;
+    }
+    @media (min-width: 640px) {
+      .profile-kv { grid-template-columns: max-content 1fr; gap: 8px 22px; }
+    }
+    .profile-kv dt {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      align-self: baseline;
+    }
+    .profile-kv dd {
+      font-size: 14.5px;
+      color: #1a1a1a;
+      line-height: 1.55;
+      margin: 0 0 8px;
+    }
+    @media (min-width: 640px) { .profile-kv dd { margin-bottom: 0; } }
+
+    /* Pros/cons list — same visual language as ranking page */
+    .profile-section .profile-pros,
+    .profile-section .profile-cons {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 8px;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .profile-section .profile-pros li,
+    .profile-section .profile-cons li {
+      padding-left: 24px;
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .profile-section .profile-pros li::before,
+    .profile-section .profile-cons li::before {
+      position: absolute;
+      left: 0; top: 1px;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: 16px;
+      width: 16px; text-align: center;
+    }
+    .profile-section .profile-pros li::before { content: "+"; color: #0f5e5c; }
+    .profile-section .profile-cons li::before { content: "−"; color: #d96847; }
+    .profile-section .profile-pros li strong,
+    .profile-section .profile-cons li strong {
+      color: #1a1a1a;
+      font-weight: 500;
+    }
+
+    /* Numbered recommendations — Fraunces ocean numerals */
+    .profile-section ol.profile-rec {
+      counter-reset: rec;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .profile-section ol.profile-rec li {
+      counter-increment: rec;
+      padding-left: 30px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .profile-section ol.profile-rec li::before {
+      content: counter(rec);
+      position: absolute;
+      left: 0; top: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      color: #0f5e5c;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Estimate cards — semi-tabular numeric forecast laid out as cards
+       so the rows stack cleanly on mobile. The "total" row spans full
+       width with an ocean tint to distinguish the summary from inputs. */
+    .profile-estimates {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 14px 0 6px;
+    }
+    @media (min-width: 640px) {
+      .profile-estimates {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+    }
+    .profile-estimate {
+      background: #fff;
+      border: 1px solid #e6e3da;
+      border-radius: 4px;
+      padding: 14px 16px 14px;
+    }
+    .profile-estimate.total {
+      grid-column: 1 / -1;
+      background: rgba(15,94,92,.06);
+      border-color: #0f5e5c;
+      border-left-width: 4px;
+    }
+    .estimate-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .estimate-value {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: 19px;
+      color: #1a1a1a;
+      letter-spacing: -0.012em;
+      line-height: 1.3;
+      font-optical-sizing: auto;
+    }
+    .profile-estimate.total .estimate-value {
+      color: #0f5e5c;
+      font-size: 22px;
+    }
+    .estimate-note {
+      font-size: 12.5px;
+      color: #6b6b6b;
+      line-height: 1.55;
+      margin-top: 6px;
+    }
+
+    /* Inline callout block (e.g. "ติดต่อได้ที่") */
+    .profile-callout {
+      background: #fff;
+      border-left: 3px solid #0f5e5c;
+      padding: 14px 18px 14px 16px;
+      margin: 14px 0 4px;
+      border-radius: 0 4px 4px 0;
+    }
+    .profile-callout-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0f5e5c;
+      margin-bottom: 8px;
+    }
+    .profile-callout ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .profile-callout ul li {
+      padding-left: 16px;
+      position: relative;
+    }
+    .profile-callout ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0; top: 0;
+      color: #6b6b6b;
+    }
+    .profile-callout a {
+      color: #0f5e5c;
+      text-decoration: underline;
+      text-decoration-color: #c9c4b6;
+    }
+
     /* Decision-principles block at the bottom — pulled out as a callout
        with a strong ink frame, more breathing room above, and ocean/coral
        accents on the typography so the eye lands on it after the cards. */
@@ -1074,6 +1409,7 @@
         <a href="#overview" class="tab" data-view="overview" role="tab" aria-selected="true">ภาพรวม</a>
         <a href="#detail" class="tab" data-view="detail" role="tab" aria-selected="false">รายละเอียด</a>
         <a href="#ranking" class="tab" data-view="ranking" role="tab" aria-selected="false">จัดอันดับ</a>
+        <a href="#profile" class="tab" data-view="profile" role="tab" aria-selected="false">เจาะลึก</a>
       </nav>
 
       <div class="search-wrap mb-7">
@@ -1154,6 +1490,11 @@
         <div id="ranking-principles"></div>
       </section>
 
+      <!-- Profile view (deep-dive of one school) -->
+      <section id="view-profile" role="tabpanel" hidden>
+        <div id="profile-content"></div>
+      </section>
+
       <div id="empty" class="hidden text-center py-20 text-ink-muted">
         <div class="font-display text-3xl mb-3">ไม่พบ<span class="display-italic">ผลลัพธ์</span></div>
         <div class="text-sm mb-7">ลองเปลี่ยนคำค้น หรือล้างตัวกรอง</div>
@@ -1169,6 +1510,7 @@
 
   <script src="data.js"></script>
   <script src="rankings.js"></script>
+  <script src="profile.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
