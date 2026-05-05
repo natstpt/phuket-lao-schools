@@ -391,6 +391,98 @@
         : `${filtered.length} จาก ${SCHOOLS.length} โรงเรียน`;
   }
 
+  // ── Ranking view ──────────────────────────────────────────────
+  // Rankings are hand-curated content from rankings.js — render once on
+  // load, no filtering needed. Each card optionally links to the matching
+  // school in the Detail view via fuzzy name match (school_match field).
+
+  function findSchoolByMatch(match) {
+    if (!match) return null;
+    return SCHOOLS.find((s) => s.name.includes(match)) || null;
+  }
+
+  function starsHTML(n, max = 5) {
+    const filled = "★".repeat(n);
+    const empty  = "☆".repeat(max - n);
+    return `<span class="ranking-stars">${filled}</span><span class="ranking-stars-empty">${empty}</span>`;
+  }
+
+  function rankingCardHTML(r, idx) {
+    const isFeatured = r.medal != null;
+    const school = findSchoolByMatch(r.school_match);
+    const detailLink = school
+      ? `<a href="#detail" class="ranking-detail-link" data-action="ranking-jump" data-id="${school.id}">ดูรายละเอียดในตาราง →</a>`
+      : "";
+    const prosHTML = r.pros.length
+      ? `<div class="ranking-section">
+           <div class="ranking-section-label">ข้อดี</div>
+           <ul class="ranking-list pros">${r.pros.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+         </div>` : "";
+    const consHTML = r.cons.length
+      ? `<div class="ranking-section">
+           <div class="ranking-section-label">ข้อเสีย</div>
+           <ul class="ranking-list cons">${r.cons.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
+         </div>` : "";
+
+    return `
+      <article class="ranking-card${isFeatured ? " featured" : ""}" style="--d:${(idx * 0.04).toFixed(2)}s">
+        <header class="ranking-head">
+          <span class="ranking-label">${r.medal ? `<span class="ranking-medal">${r.medal}</span>` : ""}${esc(r.label)}</span>
+          <span class="ranking-positions"><strong>${r.positions}</strong>ตำแหน่ง</span>
+        </header>
+        <h3 class="ranking-school">${esc(r.school_name)}</h3>
+        <div class="ranking-meta">
+          <div class="ranking-meta-line">
+            <span>${esc(r.levels)}</span>·<span>${esc(r.org)}</span>·<span>${esc(r.location)}</span>
+          </div>
+          <div class="ranking-meta-line">${esc(r.address)}</div>
+          <div class="ranking-meta-line">ใช้ ป.โท ${starsHTML(r.pho_stars)}</div>
+          ${detailLink}
+        </div>
+        ${prosHTML}
+        ${consHTML}
+      </article>
+    `;
+  }
+
+  function rankingPrinciplesHTML() {
+    if (typeof RANKING_PRINCIPLES === "undefined") return "";
+    const p = RANKING_PRINCIPLES;
+    const candidates = p.candidates.map((c) => `
+      <div class="pp-candidate-label">${esc(c.label)}</div>
+      <div class="pp-candidate-text">${esc(c.text)}</div>
+    `).join("");
+    const rules = p.rules.map((r) => `<li>${esc(r)}</li>`).join("");
+    return `
+      <h3>หลักการ<em>ตัดสินใจ</em></h3>
+      <p class="pp-intro">${esc(p.intro)}</p>
+      <div class="pp-candidates">${candidates}</div>
+      <ol>${rules}</ol>
+    `;
+  }
+
+  function renderRankings() {
+    const list = document.getElementById("rankings-list");
+    const principles = document.getElementById("ranking-principles");
+    if (!list || typeof RANKINGS === "undefined") return;
+    list.innerHTML = RANKINGS.map((r, i) => rankingCardHTML(r, i)).join("");
+    if (principles) principles.innerHTML = rankingPrinciplesHTML();
+  }
+
+  function setupRankingLinks() {
+    // "ดูรายละเอียดในตาราง →" inside a ranking card jumps to the matching
+    // school's detail row (same behavior as clicking an overview card).
+    const list = document.getElementById("rankings-list");
+    if (!list) return;
+    list.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-action='ranking-jump']");
+      if (!a) return;
+      e.preventDefault();
+      const id = parseInt(a.dataset.id, 10);
+      if (!Number.isNaN(id)) jumpToDetail(id);
+    });
+  }
+
   function setupSearch() {
     const input = document.getElementById("q");
     let t;
@@ -544,23 +636,31 @@
 
   function setupTabs() {
     const overview = document.getElementById("view-overview");
-    const detail = document.getElementById("view-detail");
+    const detail   = document.getElementById("view-detail");
+    const ranking  = document.getElementById("view-ranking");
+    const searchWrap = document.querySelector(".search-wrap");
     const tabs = document.querySelectorAll(".tab");
 
     function setView(name) {
-      const isDetail = name === "detail";
-      overview.hidden = isDetail;
-      detail.hidden = !isDetail;
+      overview.hidden = name !== "overview";
+      detail.hidden   = name !== "detail";
+      if (ranking) ranking.hidden = name !== "ranking";
+      // Search bar applies to overview/detail only — hide it on ranking
+      // since rankings are static editorial content, not filterable.
+      if (searchWrap) searchWrap.style.display = (name === "ranking") ? "none" : "";
       tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.view === name)));
-      // Leaflet needs a nudge after the container becomes visible — its size
-      // calc runs once at init and won't notice the show/hide flip.
-      if (!isDetail && mapInstance) {
+      // Leaflet needs a nudge after the container becomes visible — its
+      // size calc runs once at init and won't notice the show/hide flip.
+      if (name === "overview" && mapInstance) {
         setTimeout(() => mapInstance.invalidateSize(), 50);
       }
     }
 
     function viewFromHash() {
-      return location.hash === "#detail" ? "detail" : "overview";
+      const h = location.hash;
+      if (h === "#detail")  return "detail";
+      if (h === "#ranking") return "ranking";
+      return "overview";
     }
 
     setView(viewFromHash());
@@ -579,6 +679,8 @@
     setupTabs();
     setupCardLinks();
     setupBackButton();
+    setupRankingLinks();
+    renderRankings();
     render();
   });
 })();

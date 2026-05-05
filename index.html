@@ -628,6 +628,271 @@
       flex-shrink: 0;
     }
 
+    /* ── Ranking view ── */
+    .ranking-intro {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #3a3a3a;
+      max-width: 60ch;
+      margin: 0 0 28px;
+    }
+
+    .ranking-card {
+      background: #fff;
+      border: 1px solid #e6e3da;
+      border-radius: 4px;
+      padding: 22px 24px 24px;
+      margin-bottom: 14px;
+      transition: border-color .2s, box-shadow .2s;
+      opacity: 0;
+      animation: fadeUp .55s ease-out forwards;
+      animation-delay: var(--d, 0s);
+    }
+    .ranking-card.featured { border-color: #c9c4b6; }
+    @media (min-width: 768px) {
+      .ranking-card { padding: 26px 30px 28px; }
+    }
+
+    .ranking-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .ranking-label {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+    }
+    .ranking-medal {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .ranking-positions {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      white-space: nowrap;
+    }
+    .ranking-positions strong {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: #1a1a1a;
+      letter-spacing: -0.012em;
+      margin-right: 4px;
+    }
+
+    .ranking-school {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: 22px;
+      letter-spacing: -0.014em;
+      line-height: 1.22;
+      color: #1a1a1a;
+      margin: 0 0 10px;
+      font-optical-sizing: auto;
+    }
+    @media (min-width: 768px) {
+      .ranking-school { font-size: 24px; }
+    }
+
+    .ranking-meta {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #6b6b6b;
+      margin-bottom: 14px;
+    }
+    .ranking-meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 12px;
+    }
+    .ranking-meta-line + .ranking-meta-line { margin-top: 2px; }
+    .ranking-stars {
+      letter-spacing: 0.05em;
+      color: #d96847;     /* coral accent for the rating */
+    }
+    .ranking-stars-empty {
+      color: #d6d2c7;
+    }
+
+    .ranking-detail-link {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 12.5px;
+      color: #0f5e5c;
+      text-decoration: underline;
+      text-decoration-color: #c9c4b6;
+      text-underline-offset: 3px;
+    }
+    .ranking-detail-link:hover { text-decoration-color: #0f5e5c; }
+
+    .ranking-section {
+      margin-top: 14px;
+    }
+    .ranking-section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      margin-bottom: 8px;
+    }
+    .ranking-section-label::before {
+      content: "";
+      display: inline-block;
+      width: 14px; height: 1px;
+      background: #c9c4b6;
+    }
+    .ranking-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #1a1a1a;
+    }
+    .ranking-list li {
+      padding-left: 22px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+    .ranking-list.pros li::before,
+    .ranking-list.cons li::before {
+      position: absolute;
+      left: 0;
+      top: 1px;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: 14px;
+      width: 14px; text-align: center;
+    }
+    .ranking-list.pros li::before {
+      content: "+";
+      color: #0f5e5c;
+    }
+    .ranking-list.cons li::before {
+      content: "−";
+      color: #d96847;
+    }
+
+    /* Decision-principles block at the bottom — pulled out as a callout
+       with a strong ink frame, more breathing room above, and ocean/coral
+       accents on the typography so the eye lands on it after the cards. */
+    .ranking-principles {
+      margin-top: 40px;
+      padding: 28px 28px 28px;
+      background: #fff;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 4px;
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .ranking-principles { padding: 32px 36px 34px; }
+    }
+    /* Floating ribbon label at the top-left, sitting on the border line */
+    .ranking-principles::before {
+      content: "บทสรุป";
+      position: absolute;
+      top: -11px; left: 22px;
+      background: #fff;
+      padding: 2px 12px;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #0f5e5c;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 99px;
+    }
+    .ranking-principles h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      font-size: 24px;
+      letter-spacing: -0.014em;
+      color: #1a1a1a;
+      margin: 6px 0 10px;
+      font-optical-sizing: auto;
+    }
+    .ranking-principles h3 em {
+      font-style: italic;
+      color: #0f5e5c;
+    }
+    .ranking-principles .pp-intro {
+      font-size: 14.5px;
+      color: #3a3a3a;
+      margin: 0 0 22px;
+      line-height: 1.7;
+    }
+    .ranking-principles .pp-candidates {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4px 16px;
+      margin: 0 0 22px;
+    }
+    @media (min-width: 640px) {
+      .ranking-principles .pp-candidates {
+        grid-template-columns: auto 1fr;
+        gap: 10px 18px;
+      }
+    }
+    /* Tier label uses italic Fraunces in coral — warmer accent that makes
+       "โอกาสสูงสุด/รอง/น้อย" pop without color-coding the actual schools. */
+    .ranking-principles .pp-candidate-label {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: #d96847;
+      align-self: baseline;
+    }
+    .ranking-principles .pp-candidate-text {
+      font-size: 14.5px;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    .ranking-principles ol {
+      counter-reset: rule;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid #1a1a1a;
+      padding-top: 18px;
+    }
+    .ranking-principles ol li {
+      counter-increment: rule;
+      padding-left: 32px;
+      position: relative;
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+    .ranking-principles ol li::before {
+      content: counter(rule);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 600;
+      color: #0f5e5c;
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
     .row-num {
       font-family: "Fraunces", Georgia, serif;
       font-weight: 400;
@@ -808,6 +1073,7 @@
       <nav class="tabs mb-6" role="tablist" aria-label="เปลี่ยนมุมมอง">
         <a href="#overview" class="tab" data-view="overview" role="tab" aria-selected="true">ภาพรวม</a>
         <a href="#detail" class="tab" data-view="detail" role="tab" aria-selected="false">รายละเอียด</a>
+        <a href="#ranking" class="tab" data-view="ranking" role="tab" aria-selected="false">จัดอันดับ</a>
       </nav>
 
       <div class="search-wrap mb-7">
@@ -878,6 +1144,16 @@
         </div>
       </section>
 
+      <!-- Ranking view -->
+      <section id="view-ranking" role="tabpanel" hidden>
+        <p class="ranking-intro">
+          จัดอันดับโรงเรียนสำหรับ<span class="display-italic">ผู้สมัครสอน ป.โทคณิต</span> —
+          พร้อมข้อดี-ข้อเสียและหลักการตัดสินใจเรียงตามลำดับการเลือก
+        </p>
+        <div id="rankings-list"></div>
+        <div id="ranking-principles"></div>
+      </section>
+
       <div id="empty" class="hidden text-center py-20 text-ink-muted">
         <div class="font-display text-3xl mb-3">ไม่พบ<span class="display-italic">ผลลัพธ์</span></div>
         <div class="text-sm mb-7">ลองเปลี่ยนคำค้น หรือล้างตัวกรอง</div>
@@ -892,6 +1168,7 @@
   </main>
 
   <script src="data.js"></script>
+  <script src="rankings.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
